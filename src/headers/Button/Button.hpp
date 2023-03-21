@@ -1,13 +1,12 @@
 #pragma once
 
 #include "AbstractButton.hpp"
-#include "Widget.hpp"
+#include "..\Widget.hpp"
 #include "Sprite.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <optional>
-#include <ctime>
 #include <iostream>
 
 class Button :
@@ -18,7 +17,6 @@ protected:
 	using index = short unsigned int;
 
 	std::vector<Sprite*> sprites_;
-	std::vector<sf::Texture> textures_;
 	sf::RenderWindow& win_;
 
 	index currentSprite_ = 0;

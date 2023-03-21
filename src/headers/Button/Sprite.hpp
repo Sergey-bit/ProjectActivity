@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "Vector.hpp"
+#include "..\Vector.hpp"
 
 class Sprite
 {
