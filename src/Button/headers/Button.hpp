@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbstractButton.hpp"
-#include "..\Widget.hpp"
+#include "..\..\Widget.hpp"
 #include "Sprite.hpp"
 
 #include <SFML/Graphics.hpp>
