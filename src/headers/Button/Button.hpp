@@ -60,6 +60,9 @@ public:
 
 	virtual vec2f getScale() const;
 
+	virtual bool isHovered() const;
+	virtual bool isPressed() const;
+
 	virtual void setScale(const float& scale);
 	virtual void setScale(const float& xs, const float& ys);
 	virtual void setScale(const vec2f& scale);

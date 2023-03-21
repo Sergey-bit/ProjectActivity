@@ -200,3 +200,12 @@ void Button::hover()
 		}
 	}
 }
+
+bool Button::isHovered() const
+{
+	return currentSprite_ != 0;
+}
+bool Button::isPressed() const
+{
+	return currentSprite_ == 2;
+}
