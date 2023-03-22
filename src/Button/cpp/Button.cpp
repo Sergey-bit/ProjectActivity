@@ -190,7 +190,7 @@ void Button::hover()
 		vec2u spSize = sprites_.at(currentSprite_)->getSprite().getTexture()->getSize();
 
 		if (position_.x <= mousePos.x && position_.y <= mousePos.y &&
-			position_.x + spSize.x >= mousePos.x && position_.x + spSize.y >= mousePos.y)
+			position_.x + spSize.x >= mousePos.x && position_.y + spSize.y >= mousePos.y)
 		{
 			currentSprite_ = 1;
 		}
