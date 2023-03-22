@@ -209,3 +209,12 @@ bool Button::isPressed() const
 {
 	return currentSprite_ == 2;
 }
+
+bool Button::isVisible() const
+{
+	return visibility_;
+}
+void Button::setVisibility(bool nv)
+{
+	visibility_ = nv;
+}

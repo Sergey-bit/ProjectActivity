@@ -34,7 +34,11 @@ protected:
 
 public:
 	Button(sf::RenderWindow& window, const vec2i& pos=vec2i(0, 0));
+
 	virtual void draw();
+
+	virtual bool isVisible() const;
+	virtual void setVisibility(bool);
 
 	virtual void setHoverTexture(const std::string& filename);
 	virtual void setHoverTexture(const sf::Texture& texture);
