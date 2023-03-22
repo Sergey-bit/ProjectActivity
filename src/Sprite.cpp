@@ -58,3 +58,7 @@ void Sprite::setPosition(const vec2i& npos)
 {
 	sprite.setPosition(exchangeIF<int>(npos));
 }
+vec2u Sprite::getSize() const
+{
+	return texture->getSize();
+}

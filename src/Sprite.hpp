@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "..\..\Vector.hpp"
+#include "Vector.hpp"
 
 class Sprite
 {
@@ -24,4 +24,5 @@ public:
 	sf::Sprite& getSprite();
 
 	void setPosition(const vec2i& npos);
+	vec2u getSize() const;
 };
