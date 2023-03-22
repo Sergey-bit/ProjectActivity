@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbstractButton.hpp"
-#include "..\..\Widget.hpp"
+#include "Widget.hpp"
 #include "Sprite.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -33,7 +33,7 @@ protected:
 	Sprite* loadSprite(const sf::Image& image);
 
 public:
-	Button(sf::RenderWindow& window, const vec2i& pos=vec2i(0, 0));
+	Button(sf::RenderWindow& win, const vec2i& pos=vec2i(0, 0));
 
 	virtual void draw();
 

@@ -1,7 +1,8 @@
 #include "Button.hpp"
 
-Button::Button(sf::RenderWindow& window, const vec2i& pos) : win_(window), position_(pos),
-scale_(Core::Settings::getInstance().getGlobalScale())
+Button::Button(sf::RenderWindow& win, const vec2i& pos) :
+	win_(win), position_(pos),
+	scale_(1.0f, 1.0f)
 {
 	sprites_.push_back(nullptr);
 	sprites_.push_back(nullptr);
@@ -164,11 +165,17 @@ void Button::draw()
 	hover();
 	pressed();
 
-	if (sprites_.at(currentSprite_))
+	if (visibility_ && sprites_.at(currentSprite_))
 	{
 		Sprite* sp = sprites_.at(currentSprite_);
+
+		const vec2f& scale = sp->getSprite().getScale();
+		const vec2f& globalScale = Core::Settings::getInstance().getGlobalScale();
+
+		sp->getSprite().scale(globalScale * scale_);
 		win_.draw(sp->getSprite());
 
+		sp->getSprite().setScale(scale);
 	}
 }
 void Button::pressed()
