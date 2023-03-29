@@ -1,6 +1,7 @@
 #pragma once
 
-#include "..\..\Object.hpp"
+#include "Object.hpp"
+#include "Sprite.hpp"
 
 namespace Core
 {

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Vector.hpp"
+#include "Object.hpp"
 
 class Sprite
 {

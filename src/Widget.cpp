@@ -1,33 +1,36 @@
-#include "Widget.hpp"
+#include "Object.hpp"
 
-Core::Settings::Settings() : scale_(1.f, 1.f)
-{
-
-}
-Core::Settings& Core::Settings::getInstance()
-{
-	static Settings wid = Settings();
-	return wid;
-}
-
-vec2f Core::Settings::getGlobalScale() const
+vec2f Core::Settings::getGlobalScale()
 {
 	return scale_;
 }
 void Core::Settings::setGlobalScale(const float& scale)
 {
-	scale_.x = scale;
-	scale_.y = scale;
+	setGlobalScale({ scale, scale });
 }
 
 void Core::Settings::setGlobalScale(const float& xs, const float& ys)
 {
-	scale_.x = xs;
-	scale_.y = ys;
+	setGlobalScale({ xs, ys });
 }
 void Core::Settings::setGlobalScale(const vec2f& scale)
 {
-	scale_.x = scale.x;
-	scale_.y = scale.y;
+	scale_ = scale;
+	for (GameObject* object : objects_)
+	{
+		object->setScale(scale_);
+	}
 }
 
+void Core::Settings::addGameObject(GameObject*& object)
+{
+	objects_.push_back(object);
+}
+
+Core::GameObject::GameObject(GameObject* object)
+{
+	Settings::addGameObject(object);
+}
+
+std::vector<Core::GameObject*> Core::Settings::objects_;
+vec2f Core::Settings::scale_(1.f, 1.f);

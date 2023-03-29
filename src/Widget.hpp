@@ -1,22 +1,27 @@
 #pragma once
 
 #include "Vector.hpp"
+#include <vector>
 
 namespace Core
 {
-	class Settings
+	class GameObject;
+
+	class Settings final
 	{
 	private:
-		vec2f scale_;
-		Settings();
+		using Uint32 = unsigned int;
+
+		static std::vector<GameObject*> objects_;
+		static vec2f scale_;
 
 	public:
-		virtual vec2f getGlobalScale() const;
-		virtual void setGlobalScale(const float& scale);
+		static void addGameObject(GameObject*& object);
 
-		virtual void setGlobalScale(const float& xs, const float& ys);
-		virtual void setGlobalScale(const vec2f& nvec);
+		static vec2f getGlobalScale();
+		static void setGlobalScale(const float& scale);
 
-		static Settings& getInstance();
+		static void setGlobalScale(const float& xs, const float& ys);
+		static void setGlobalScale(const vec2f& nvec);
 	};
 }

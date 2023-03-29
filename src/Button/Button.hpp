@@ -1,17 +1,13 @@
 #pragma once
 
 #include "AbstractButton.hpp"
-#include "Widget.hpp"
-#include "Sprite.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <vector>
 #include <optional>
 #include <iostream>
 
 class Button :
-	virtual public Core::GameObject,
-	virtual public Core::AbstractButton
+	virtual public Core::AbstractButton,
+	virtual public Core::GameObject
 {
 protected:
 	using index = short unsigned int;
@@ -69,5 +65,9 @@ public:
 
 	virtual void setScale(const float& scale);
 	virtual void setScale(const float& xs, const float& ys);
-	virtual void setScale(const vec2f& scale);
+	virtual void setScale(const vec2f& scale) override;
+
+	virtual void scale(const float& scale_);
+	virtual void scale(const float& xs, const float& ys);
+	virtual void scale(const vec2f& scale_);
 };

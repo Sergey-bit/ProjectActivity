@@ -1,6 +1,7 @@
 #include "Button.hpp"
 
 Button::Button(sf::RenderWindow& win, const vec2i& pos) :
+	GameObject((GameObject*)this),
 	win_(win), position_(pos),
 	scale_(1.0f, 1.0f)
 {
@@ -40,17 +41,33 @@ Sprite* Button::loadSprite(const sf::Texture& texture)
 
 void Button::setScale(const float& scale)
 {
-	scale_.x = scale;
-	scale_.y = scale;
+	setScale({ scale, scale });
 }
 void Button::setScale(const float& xs, const float& ys)
 {
-	scale_.x = xs;
-	scale_.y = ys;
+	setScale({ xs, ys });
 }
 void Button::setScale(const vec2f& scale)
 {
-	scale_ = std::move(scale);
+	scale_ = scale;
+
+	for (auto& s : sprites_)
+	{
+		s->getSprite().setScale(scale);
+	}
+}
+
+void Button::scale(const float& scale_)
+{
+	scale({ scale_, scale_ });
+}
+void Button::scale(const float& xs, const float& ys)
+{
+	scale({ xs, ys });
+}
+void Button::scale(const vec2f& scale)
+{
+	setScale(scale_ * scale);
 }
 
 vec2f Button::getScale() const
@@ -168,14 +185,7 @@ void Button::draw()
 	if (visibility_ && sprites_.at(currentSprite_))
 	{
 		Sprite* sp = sprites_.at(currentSprite_);
-
-		const vec2f& scale = sp->getSprite().getScale();
-		const vec2f& globalScale = Core::Settings::getInstance().getGlobalScale();
-
-		sp->getSprite().scale(globalScale * scale_);
 		win_.draw(sp->getSprite());
-
-		sp->getSprite().setScale(scale);
 	}
 }
 void Button::pressed()
@@ -194,10 +204,11 @@ void Button::hover()
 	if(sprites_.at(currentSprite_))
 	{
 		vec2i mousePos = sf::Mouse::getPosition(win_);
-		vec2u spSize = sprites_.at(currentSprite_)->getSprite().getTexture()->getSize();
+		vec2u spSize = sprites_.at(0)->getSprite().getTexture()->getSize();
 
 		if (position_.x <= mousePos.x && position_.y <= mousePos.y &&
-			position_.x + spSize.x >= mousePos.x && position_.y + spSize.y >= mousePos.y)
+			position_.x + spSize.x * scale_.x >= mousePos.x &&
+			position_.y + spSize.y * scale_.y >= mousePos.y)
 		{
 			currentSprite_ = 1;
 		}
