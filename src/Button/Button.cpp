@@ -53,7 +53,10 @@ void Button::setScale(const vec2f& scale)
 
 	for (auto& s : sprites_)
 	{
-		s->getSprite().setScale(scale);
+		if (s)
+		{
+			s->getSprite().setScale(scale);
+		}
 	}
 }
 
