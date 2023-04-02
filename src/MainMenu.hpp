@@ -1,8 +1,10 @@
 #pragma once
+
 #include "Frame.hpp"
 #include "Sprite.hpp"
-#include "Button.hpp"
+#include "Button/Button.hpp"
 #include "BackSprite.hpp"
+#include <functional>
 
 class MainMenu: public Frame {
 private:
@@ -34,7 +36,7 @@ public:
 
     virtual bool startPressed() const;
     virtual bool multiplayerPressed() const;
-    virtual bool settingsPressed() const;
+    virtual bool& settingsPressed();
     virtual bool statisticsPressed() const;
     virtual bool achivmentsPressed() const;
     virtual bool shopPressed() const;

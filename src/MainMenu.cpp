@@ -98,7 +98,7 @@ bool MainMenu::multiplayerPressed() const {
     return isMultiplayerPressed;
 }
 
-bool MainMenu::settingsPressed() const {
+bool& MainMenu::settingsPressed() const {
     return isSettingsPressed;
 }
 
