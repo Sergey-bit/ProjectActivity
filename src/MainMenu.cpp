@@ -53,30 +53,14 @@ MainMenu::MainMenu(sf::RenderWindow& Window) :
 }
 
 void MainMenu::work() {
-    draw();
-
-    if (start.isPressed()) {
-        isStartPressed = true;
-    }
-    if (multiplayer.isPressed()) {
-        isMultiplayerPressed = true;
-    }
-    if (settings.isPressed()) {
-        isSettingsPressed = true;
-    }
-    if (statistics.isPressed()) {
-        isStatisticsPressed = true;
-    }
-    if (achivments.isPressed()) {
-        isAchivmentsPressed = true;
-    }
-    if (shop.isPressed()) {
-        isShopPressed = true;
-    }
-    if (exit.isPressed()) {
-       Window.close();
-    }
-
+    draw(); 
+    isStartPressed = start.isPressed();
+    isMultiplayerPressed = multiplayer.isPressed();
+    isSettingsPressed = settings.isPressed();
+    isStatisticsPressed = statistics.isPressed();
+    isAchivmentsPressed = achivments.isPressed();
+    isShopPressed = shop.isPressed();
+    Window.close();
 }
 
 void MainMenu::draw() {
@@ -90,26 +74,26 @@ void MainMenu::draw() {
     exit.draw();
 }
 
-bool MainMenu::startPressed() const {
+const bool& MainMenu::startPressed() const {
     return isStartPressed;
 }
 
-bool MainMenu::multiplayerPressed() const {
+const bool& MainMenu::multiplayerPressed() const {
     return isMultiplayerPressed;
 }
 
-bool& MainMenu::settingsPressed() const {
+const bool& MainMenu::settingsPressed() const {
     return isSettingsPressed;
 }
 
-bool MainMenu::statisticsPressed() const {
+const bool& MainMenu::statisticsPressed() const {
     return isStatisticsPressed;
 }
 
-bool MainMenu::achivmentsPressed() const {
+const bool& MainMenu::achivmentsPressed() const {
     return isAchivmentsPressed;
 }
 
-bool MainMenu::shopPressed() const {
+const bool& MainMenu::shopPressed() const {
     return isShopPressed;
 }
