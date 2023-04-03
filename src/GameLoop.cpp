@@ -32,7 +32,6 @@ void GameLoop::work()
 		}
 
 		win_.clear();
-		index prev = currentFrame_;
 		for (const auto& transfer : transfers_)
 		{
 
@@ -40,7 +39,6 @@ void GameLoop::work()
 			{
 				currentFrame_ = transfer.b;
 				break;
-				//std::cout << currentFrame_ << std::endl;
 			}
 		}
 
