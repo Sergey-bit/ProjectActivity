@@ -13,42 +13,42 @@ MainMenu::MainMenu(sf::RenderWindow& Window) :
     back(Window)
 
 {
-    start.setCalmTexture("image\\startgame.png"); 
-    start.setHoverTexture("image\\startgame_hovered.png");
-    start.setPressedTexture("image\\startgame_pressed.png");
+    start.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\StartGameButton\\Calm.png");
+    start.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\StartGameButton\\Hover.png");
+    start.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\StartGameButton\\Pressed.png");
     start.setScale(globalskale * skalebutton);
 
-    multiplayer.setCalmTexture("image\\multiplayer.png");
-    multiplayer.setHoverTexture("image\\multiplayer_hovered.png");
-    multiplayer.setPressedTexture("image\\multiplayer_pressed.png");
+    multiplayer.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\PlayingWithFriendsButton\\Calm.png");
+    multiplayer.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\PlayingWithFriendsButton\\Hover.png");
+    multiplayer.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\PlayingWithFriendsButton\\Pressed.png");
     multiplayer.setScale(globalskale * skalebutton);
 
-    settings.setCalmTexture("image\\settings.png");
-    settings.setHoverTexture("image\\settings_hovered.png");
-    settings.setPressedTexture("image\\settings_pressed.png");
+    settings.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\SettingsButton\\Calm.png");
+    settings.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\SettingsButton\\Hover.png");
+    settings.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\SettingsButton\\Pressed.png");
     settings.setScale(globalskale * skalebutton);
 
-    statistics.setCalmTexture("image\\statistics.png");
-    statistics.setHoverTexture("image\\statistics_hovered.png");
-    statistics.setPressedTexture("image\\statistics_pressed.png");
+    statistics.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\StaticsticsButton\\Calm.png");
+    statistics.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\StaticsticsButton\\Hover.png");
+    statistics.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\StaticsticsButton\\Pressed.png");
     statistics.setScale(globalskale * skalebutton);
 
-    achivments.setCalmTexture("image\\achivments.png");
-    achivments.setHoverTexture("image\\achivments_hovered.png");
-    achivments.setPressedTexture("image\\achivments_pressed.png");
+    achivments.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\AchievementButton\\Calm.png");
+    achivments.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\AchievementButton\\Hover.png");
+    achivments.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\AchievementButton\\Pressed.png");
     achivments.setScale(globalskale * skalebutton);
 
-    shop.setCalmTexture("image\\shop.png");
-    shop.setHoverTexture("image\\shop_hovered.png");
-    shop.setPressedTexture("image\\shop_pressed.png");
+    shop.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\ShopButton\\Calm.png");
+    shop.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\ShopButton\\Hover.png");
+    shop.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\ShopButton\\Pressed.png");
     shop.setScale(globalskale * skalebutton);
 
-    exit.setCalmTexture("image\\exit.png");
-    exit.setHoverTexture("image\\exit.png");
-    exit.setPressedTexture("image\\exit.png");
+    exit.setCalmTexture("resources\\textures\\MainMenu\\Buttons\\ExitButton\\Calm.png");
+    exit.setHoverTexture("resources\\textures\\MainMenu\\Buttons\\ExitButton\\Calm.png");
+    exit.setPressedTexture("resources\\textures\\MainMenu\\Buttons\\ExitButton\\Calm.png");
     exit.setScale(globalskale * 0.3 );
 
-    back.load("image\\menu.png");
+    back.load("resources\\textures\\MainMenu\\Background\\MainMenuBackground.png");
     back.setScale(vec2f(globalskale, globalskale));
 }
 

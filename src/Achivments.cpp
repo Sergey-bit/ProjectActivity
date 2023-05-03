@@ -13,15 +13,15 @@ Achivments::Achivments(sf::RenderWindow& Window) :
 	rectAchive5_(Window),
 	rectAchive6_(Window)
 {
-	back.load("image\\achivmentsMenu.png");
+	back.load("resources\\textures\\AchivmentsMenu\\Background\\achivmentsMenu.png");
 	back.setScale(vec2f(globalskale, globalskale));
 
-	rectAchive1_.load("image\\okno1.png");
-	rectAchive2_.load("image\\okno2.png");
-	rectAchive3_.load("image\\okno3.png");
-	rectAchive4_.load("image\\okno4.png");
-	rectAchive5_.load("image\\okno5.png");
-	rectAchive6_.load("image\\okno6.png");
+	rectAchive1_.load("resources\\textures\\AchivmentsMenu\\Images\\okno1.png");
+	rectAchive2_.load("resources\\textures\\AchivmentsMenu\\Images\\okno2.png");
+	rectAchive3_.load("resources\\textures\\AchivmentsMenu\\Images\\okno3.png");
+	rectAchive4_.load("resources\\textures\\AchivmentsMenu\\Images\\okno4.png");
+	rectAchive5_.load("resources\\textures\\AchivmentsMenu\\Images\\okno5.png");
+	rectAchive6_.load("resources\\textures\\AchivmentsMenu\\Images\\okno6.png");
 	
 	rectAchive1_.setScale(vec2f(globalskale , globalskale ));
 	rectAchive2_.setScale(vec2f(globalskale , globalskale ));
@@ -37,7 +37,7 @@ Achivments::Achivments(sf::RenderWindow& Window) :
 	rectAchive5_.setPosition(vec2i(675 * globalskale , 580 * globalskale));
 	rectAchive6_.setPosition(vec2i(1300 * globalskale , 620 * globalskale));
 	
-	font.loadFromFile("fonts\\Roboto-Bolt.ttf");
+	font.loadFromFile("resources\\fonts\\Roboto-Bolt.ttf");
 
 	text1_.setScale(vec2f(globalskale, globalskale));
 	text1_.setPosition({ vec2f(105 * globalskale, 225 * globalskale ) });
