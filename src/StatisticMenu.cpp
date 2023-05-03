@@ -5,9 +5,9 @@ StatisticMenu::StatisticMenu(sf::RenderWindow& window) :
 	Frame(exchangeIF<unsigned int>({ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), { 0,0 }),
 	window(window), back(window)
 {
-	back.load("StatisticMenu.png");
+	back.load("..\\resources\\textures\\StatisticMenu\\StatisticMenu.png");
 	back.setScale(vec2f(globalskale, globalskale));
-	font.loadFromFile("Roboto-Bold.ttf");
+	font.loadFromFile("..\\resources\\fonts\\Roboto-Bold.ttf");
 	name.setPosition({ 300, 20 });
 	rank.setPosition({ 1400, 20 });
 	winsPercentage.setPosition({ 1400, 255 });
