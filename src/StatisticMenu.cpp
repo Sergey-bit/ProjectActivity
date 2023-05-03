@@ -9,6 +9,14 @@ StatisticMenu::StatisticMenu(sf::RenderWindow& window) :
 	back.load(TEX_PATH "StatisticMenu\\StatisticMenu.png");
 	back.setScale(vec2f(globalskale, globalskale));
 	font.loadFromFile("ProjectActivity\\resources\\fonts\\Roboto-Bold.ttf");
+	name.setFont(font);
+	rank.setFont(font);
+	winsPercentage.setFont(font);
+	kills.setFont(font);
+	favWeapon.setFont(font);
+	KDA.setFont(font);
+	matchesPlayed.setFont(font);
+	averMatchTime.setFont(font);
 	name.setPosition({ 300, 20 });
 	rank.setPosition({ 1400, 20 });
 	winsPercentage.setPosition({ 1400, 255 });
