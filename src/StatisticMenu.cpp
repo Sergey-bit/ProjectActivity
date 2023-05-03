@@ -1,4 +1,4 @@
-#include "StatisticMenu.h"
+#include <StatisticMenu.h>
 
 
 StatisticMenu::StatisticMenu(sf::RenderWindow& window) :

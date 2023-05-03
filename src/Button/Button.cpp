@@ -1,4 +1,4 @@
-#include "Button.hpp"
+#include <Button\Button.hpp>
 
 Button::Button(sf::RenderWindow& win, const vec2i& pos) :
 	GameObject((GameObject*)this),

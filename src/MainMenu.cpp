@@ -1,4 +1,4 @@
-#include "MainMenu.hpp"
+#include <MainMenu.hpp>
 
 MainMenu::MainMenu(sf::RenderWindow& Window) :
 	Frame(exchangeIF<unsigned int> ( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),

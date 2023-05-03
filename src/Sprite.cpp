@@ -1,4 +1,4 @@
-#include "Sprite.hpp"
+#include <Sprite.hpp>
 
 Sprite::Sprite() : texture(nullptr)
 {

@@ -20,11 +20,12 @@ class StatisticMenu: public Frame {
 	sf::Text matchesPlayed;
 	sf::Text averMatchTime;
 	float globalskale = sf::VideoMode::getDesktopMode().width / 1920.0;
-	const bool& escPressed() const;
+	bool isEscPressed = false;
 public:
 	StatisticMenu(sf::RenderWindow& window);
 	virtual void work();
+
 	virtual void draw();
-	bool isEscPressed = false;
+	const bool& escPressed() const;
 };
 

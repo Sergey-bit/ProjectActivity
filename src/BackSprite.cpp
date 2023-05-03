@@ -1,4 +1,4 @@
-#include "BackSprite.hpp"
+#include <BackSprite.hpp>
 
 BackSprite::BackSprite(sf::RenderWindow& window) :
 	GameObject((Core::GameObject*)this), win_(window), scale_(1.f, 1.f)

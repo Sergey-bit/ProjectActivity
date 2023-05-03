@@ -1,4 +1,4 @@
-#include "Frame.hpp"
+#include <Frame.hpp>
 
 Frame::Frame(const vec2i& size, const vec2i& position) :
 	size_(size), pos_(position)

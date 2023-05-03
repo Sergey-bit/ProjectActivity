@@ -1,8 +1,8 @@
 #pragma once
-#include "Frame.hpp"
-#include "Sprite.hpp"
-#include "Button.hpp"
-#include "BackSprite.hpp"
+#include <Frame.hpp>
+#include <Sprite.hpp>
+#include <Button\Button.hpp>
+#include <BackSprite.hpp>
 #include <CTime>
 #include <vector>
 

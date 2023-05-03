@@ -1,4 +1,4 @@
-#include "Object.hpp"
+#include <Object.hpp>
 
 vec2f Core::Settings::getGlobalScale()
 {
