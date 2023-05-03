@@ -1,10 +1,9 @@
 #pragma once
+
 #include "Transfer.hpp"
 #include "Vector.hpp"
 #include <SFML/Graphics.hpp>
 #include "BackSprite.hpp"
-
-
 
 
 class StatisticMenu: public Frame {

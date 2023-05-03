@@ -3,6 +3,8 @@
 #include "Vector.hpp"
 #include <vector>
 
+#define TEX_PATH "ProjectActivity\\resources\\textures\\"
+
 namespace Core
 {
 	class GameObject;
