@@ -32,12 +32,12 @@ public:
     virtual void work();
     virtual void draw();
 
-    virtual bool startPressed() const;
-    virtual bool multiplayerPressed() const;
-    virtual bool settingsPressed() const;
-    virtual bool statisticsPressed() const;
-    virtual bool achivmentsPressed() const;
-    virtual bool shopPressed() const;
+    virtual const bool& startPressed() const;
+    virtual const bool& multiplayerPressed() const;
+    virtual const bool& settingsPressed() const;
+    virtual const bool& statisticsPressed() const;
+    virtual const bool& achivmentsPressed() const;
+    virtual const bool& shopPressed() const;
     
 };
 

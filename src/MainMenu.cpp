@@ -1,7 +1,7 @@
 #include "MainMenu.hpp"
 
 MainMenu::MainMenu(sf::RenderWindow& Window) :
-	Frame({ 1600, 900 }, { 0,0 }) ,
+	Frame(exchangeIF<unsigned int> ( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),
     start( Window , vec2i(250 * globalskale, 100 * globalskale)),
     multiplayer(Window, vec2i(250 * globalskale, 226 * globalskale)),
     settings(Window, vec2i(250 * globalskale, 350 * globalskale)),
@@ -46,7 +46,7 @@ MainMenu::MainMenu(sf::RenderWindow& Window) :
     exit.setCalmTexture("image\\exit.png");
     exit.setHoverTexture("image\\exit.png");
     exit.setPressedTexture("image\\exit.png");
-    exit.setScale(globalskale * skalebutton * 0.175);
+    exit.setScale(globalskale * 0.3 );
 
     back.load("image\\menu.png");
     back.setScale(vec2f(globalskale, globalskale));
@@ -60,7 +60,7 @@ void MainMenu::work() {
     isStatisticsPressed = statistics.isPressed();
     isAchivmentsPressed = achivments.isPressed();
     isShopPressed = shop.isPressed();
-    Window.close();
+    if(exit.isPressed()) Window.close();
 }
 
 void MainMenu::draw() {
