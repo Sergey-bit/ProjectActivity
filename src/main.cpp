@@ -15,15 +15,18 @@ int main()
 	StatisticMenu statis(loop.getWindow());
 	MainMenu menu(loop.getWindow());
 
-	GameLoop::index achivIndex = loop.addFrame(&achiv);
-	GameLoop::index statisIndex = loop.addFrame(&statis);
 	GameLoop::index menuIndex = loop.addFrame(&menu);
+	GameLoop::index achivIndex = loop.addFrame(&achiv);
+	GameLoop::index statisIndex = loop.addFrame(&statis);	
 
 	loop.addTransfer({ menuIndex, menu.achivmentsPressed(), achivIndex });
-	loop.addTransfer({ achivIndex, menu.statisticsPressed(), statisIndex });
+	loop.addTransfer({ menuIndex, menu.statisticsPressed(), statisIndex });
 
 	loop.addTransfer({ menuIndex, menu.statisticsPressed(), statisIndex });
 	loop.addTransfer({ statisIndex, statis.escPressed(), menuIndex });
+	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
+	
+	loop.work();
 
 	return EXIT_SUCCESS;
 }

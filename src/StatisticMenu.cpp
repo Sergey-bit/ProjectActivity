@@ -8,7 +8,7 @@ StatisticMenu::StatisticMenu(sf::RenderWindow& window) :
 {
 	back.load(TEX_PATH "StatisticMenu\\StatisticMenu.png");
 	back.setScale(vec2f(globalskale, globalskale));
-	font.loadFromFile("ProjectActivity\\resources\\fonts\\Roboto-Bold.ttf");
+	font.loadFromFile(FONT_PATH "Roboto-Bolt.ttf");
 	name.setFont(font);
 	rank.setFont(font);
 	winsPercentage.setFont(font);

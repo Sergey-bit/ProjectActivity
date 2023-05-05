@@ -37,7 +37,7 @@ Achivments::Achivments(sf::RenderWindow& Window) :
 	rectAchive5_.setPosition(vec2i(675 * globalskale , 580 * globalskale));
 	rectAchive6_.setPosition(vec2i(1300 * globalskale , 620 * globalskale));
 	
-	font.loadFromFile(TEX_PATH "fonts\\Roboto-Bolt.ttf");
+	font.loadFromFile(FONT_PATH "Roboto-Bolt.ttf");
 
 	text1_.setScale(vec2f(globalskale, globalskale));
 	text1_.setPosition({ vec2f(105 * globalskale, 225 * globalskale ) });

@@ -4,6 +4,8 @@
 #include <vector>
 
 #define TEX_PATH "ProjectActivity\\resources\\textures\\"
+#define FONT_PATH "ProjectActivity\\resources\\fonts\\"
+
 
 namespace Core
 {

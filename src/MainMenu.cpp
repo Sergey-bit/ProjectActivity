@@ -1,5 +1,6 @@
 #include <MainMenu.hpp>
 
+
 MainMenu::MainMenu(sf::RenderWindow& Window) :
 	Frame(exchangeIF<unsigned int> ( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),
     start( Window , vec2i(250 * globalskale, 100 * globalskale)),
@@ -46,7 +47,7 @@ MainMenu::MainMenu(sf::RenderWindow& Window) :
     exit.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
     exit.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
     exit.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
-    exit.setScale(globalskale * 0.3 );
+    exit.setScale(globalskale * 0.3);
 
     back.load(TEX_PATH "MainMenu\\Background\\MainMenuBackground.png");
     back.setScale(vec2f(globalskale, globalskale));

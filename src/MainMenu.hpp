@@ -3,6 +3,7 @@
 #include <Sprite.hpp>
 #include <Button\Button.hpp>
 #include <BackSprite.hpp>
+#include <Widget.hpp>
 
 class MainMenu: public Frame {
 private:
