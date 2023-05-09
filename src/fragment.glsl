@@ -7,12 +7,13 @@ precision mediump float;
 
 uniform vec2 iResolution;
 uniform float iTime;
+uniform vec3 iBaseColor;
 
 void main(void) {
 		vec2 xy = (gl_FragCoord.xy - 0.5f * iResolution) / length(0.5f * iResolution);
 		vec3 col = vec3(0.f, 0.f, 0.f);
 
-		const float scale = 0.1f;
+		const float scale = 0.15f;
 
 		float tr1 = 0.05f * scale;
 		float tr2 = 0.2f * scale;
@@ -68,7 +69,7 @@ void main(void) {
 		{
 			if ((acceptR < acceptL && (rho >= acceptL || rho <= acceptR)) ||(rho >= acceptL && rho <= acceptR))
 			{
-				col = vec3(0.8f, 0.8f, 7.0f);
+				col = iBaseColor;
 			}
 
 			col.xyz *= smoothstep(tr2, tr1, r);
@@ -81,7 +82,7 @@ void main(void) {
 			
 			if ((acceptR < acceptL && (rho >= acceptL || rho <= acceptR)) ||(rho >= acceptL && rho <= acceptR))
 			{
-				col = vec3(0.8f, 0.8f, 7.0f);
+				col = iBaseColor;
 				col.y *= 0.5f + 0.6f * abs(cos(rho * iTime));
 				col.z *= 0.4f + 0.2f * abs(sin(rho * iTime));
 			}

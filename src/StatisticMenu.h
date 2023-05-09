@@ -22,6 +22,7 @@ class StatisticMenu: public Frame {
 public:
 	StatisticMenu(sf::RenderWindow& window);
 	virtual void work();
+	virtual void init();
 
 	virtual void draw();
 	const bool& escPressed() const;

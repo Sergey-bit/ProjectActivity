@@ -2,16 +2,7 @@
 
 #define COUNT_IMG 6
 
-Achivments::Achivments(sf::RenderWindow& Window) :
-	Frame(exchangeIF<unsigned int>({ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), { 0,0 }),
-	Window(Window),
-	back(Window),
-	rectAchive1_(Window),
-	rectAchive2_(Window),
-	rectAchive3_(Window),
-	rectAchive4_(Window),
-	rectAchive5_(Window),
-	rectAchive6_(Window)
+void Achivments::init()
 {
 	back.load(TEX_PATH "AchivmentsMenu\\Background\\achivmentsMenu.png");
 	back.setScale(vec2f(globalskale, globalskale));
@@ -22,25 +13,25 @@ Achivments::Achivments(sf::RenderWindow& Window) :
 	rectAchive4_.load(TEX_PATH "AchivmentsMenu\\Images\\okno4.png");
 	rectAchive5_.load(TEX_PATH "AchivmentsMenu\\Images\\okno5.png");
 	rectAchive6_.load(TEX_PATH "AchivmentsMenu\\Images\\okno6.png");
-	
-	rectAchive1_.setScale(vec2f(globalskale , globalskale ));
-	rectAchive2_.setScale(vec2f(globalskale , globalskale ));
-	rectAchive3_.setScale(vec2f(globalskale , globalskale ));
-	rectAchive4_.setScale(vec2f(globalskale , globalskale ));
-	rectAchive5_.setScale(vec2f(globalskale , globalskale ));
-	rectAchive6_.setScale(vec2f(globalskale , globalskale ));
 
-	rectAchive1_.setPosition(vec2i(50 * globalskale , 120 * globalskale));
-	rectAchive2_.setPosition(vec2i(675 * globalskale , 80 * globalskale));
-	rectAchive3_.setPosition(vec2i(1300 * globalskale , 120 * globalskale));
-	rectAchive4_.setPosition(vec2i(50 * globalskale , 620 * globalskale));
-	rectAchive5_.setPosition(vec2i(675 * globalskale , 580 * globalskale));
-	rectAchive6_.setPosition(vec2i(1300 * globalskale , 620 * globalskale));
-	
+	rectAchive1_.setScale(vec2f(globalskale, globalskale));
+	rectAchive2_.setScale(vec2f(globalskale, globalskale));
+	rectAchive3_.setScale(vec2f(globalskale, globalskale));
+	rectAchive4_.setScale(vec2f(globalskale, globalskale));
+	rectAchive5_.setScale(vec2f(globalskale, globalskale));
+	rectAchive6_.setScale(vec2f(globalskale, globalskale));
+
+	rectAchive1_.setPosition(vec2i(50 * globalskale, 120 * globalskale));
+	rectAchive2_.setPosition(vec2i(675 * globalskale, 80 * globalskale));
+	rectAchive3_.setPosition(vec2i(1300 * globalskale, 120 * globalskale));
+	rectAchive4_.setPosition(vec2i(50 * globalskale, 620 * globalskale));
+	rectAchive5_.setPosition(vec2i(675 * globalskale, 580 * globalskale));
+	rectAchive6_.setPosition(vec2i(1300 * globalskale, 620 * globalskale));
+
 	font.loadFromFile(FONT_PATH "Roboto-Bolt.ttf");
 
 	text1_.setScale(vec2f(globalskale, globalskale));
-	text1_.setPosition({ vec2f(105 * globalskale, 225 * globalskale ) });
+	text1_.setPosition({ vec2f(105 * globalskale, 225 * globalskale) });
 	text1_.setFont(font);
 	text1_.setFillColor(sf::Color::Red);
 	text1_.setOutlineThickness(2.5);
@@ -86,6 +77,19 @@ Achivments::Achivments(sf::RenderWindow& Window) :
 	text6_.setOutlineThickness(2.5);
 	text6_.setOutlineColor(sf::Color::Black);
 	text6_.setString("Killer: kill \nall players \nin the match");
+}
+
+Achivments::Achivments(sf::RenderWindow& Window) :
+	Frame(exchangeIF<unsigned int>({ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), { 0,0 }),
+	Window(Window),
+	back(Window),
+	rectAchive1_(Window),
+	rectAchive2_(Window),
+	rectAchive3_(Window),
+	rectAchive4_(Window),
+	rectAchive5_(Window),
+	rectAchive6_(Window)
+{
 }
 
 void Achivments::work() {

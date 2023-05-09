@@ -1,10 +1,7 @@
 #include <StatisticMenu.h>
 #include <Widget.hpp>
 
-
-StatisticMenu::StatisticMenu(sf::RenderWindow& window) :
-	Frame(exchangeIF<unsigned int>({ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), { 0,0 }),
-	window(window), back(window)
+void StatisticMenu::init()
 {
 	back.load(TEX_PATH "StatisticMenu\\StatisticMenu.png");
 	back.setScale(vec2f(globalskale, globalskale));
@@ -26,12 +23,16 @@ StatisticMenu::StatisticMenu(sf::RenderWindow& window) :
 	matchesPlayed.setPosition({ 1400, 655 });
 	averMatchTime.setPosition({ 1400, 765 });
 }
+StatisticMenu::StatisticMenu(sf::RenderWindow& window) :
+	Frame(exchangeIF<unsigned int>({ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), { 0,0 }),
+	window(window), back(window)
+{
+}
 
 const  bool& StatisticMenu::escPressed() const
 {
 	return isEscPressed;
 }
-
 void StatisticMenu::work()
 {
 	draw();
@@ -39,7 +40,6 @@ void StatisticMenu::work()
 	if (isEscPressed)
 		;//transfer
 }
-
 void StatisticMenu::draw()
 {
 	back.draw();

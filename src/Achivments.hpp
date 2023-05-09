@@ -41,6 +41,8 @@ public:
 	Achivments(sf::RenderWindow& Window);
 	virtual void work();
 	virtual const bool& exit() const;	
+	virtual void init();
+
 	virtual	void setAchiveVisible(const achivki & qwe, const bool & asd);
 	virtual void oknadraw();
 

@@ -11,7 +11,9 @@ private:
 
 public:
 	Frame(const vec2i& size, const vec2i& position = { 0, 0 });
+
 	virtual void work() = 0;
+	virtual void init() = 0;
 
 	virtual const vec2i& getSize() const;
 	virtual void setSize(const vec2i& nsize);

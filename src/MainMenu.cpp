@@ -8,17 +8,7 @@ inline void loadButton(Button& button, const std::string& calmPath,
     button.setPressedTexture(pressedPath);
 }
 
-MainMenu::MainMenu(sf::RenderWindow& Window) :
-	Frame(exchangeIF<unsigned int>( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),
-    start( Window , 250 * globalskale, 100 * globalskale),
-    multiplayer(Window, 250 * globalskale, 226 * globalskale),
-    settings(Window, 250 * globalskale, 350 * globalskale),
-    statistics(Window, 250 * globalskale, 474 * globalskale),
-    achivments(Window, 250 * globalskale, 598 * globalskale),
-    exit(Window, 965 * globalskale, 683 * globalskale),
-    shop(Window),
-    Window(Window),
-    back(Window)
+void MainMenu::init()
 {
     back.load(TEX_PATH "MainMenu\\Background\\MainMenuBackground.png");
     back.setScale(globalskale);
@@ -62,6 +52,20 @@ MainMenu::MainMenu(sf::RenderWindow& Window) :
     achivments.setScale(globalskale * skalebutton);
     multiplayer.setScale(globalskale * skalebutton);
     start.setScale(globalskale * skalebutton);
+}
+
+MainMenu::MainMenu(sf::RenderWindow& Window) :
+	Frame(exchangeIF<unsigned int>( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),
+    start( Window , 250 * globalskale, 100 * globalskale),
+    multiplayer(Window, 250 * globalskale, 226 * globalskale),
+    settings(Window, 250 * globalskale, 350 * globalskale),
+    statistics(Window, 250 * globalskale, 474 * globalskale),
+    achivments(Window, 250 * globalskale, 598 * globalskale),
+    exit(Window, 965 * globalskale, 683 * globalskale),
+    shop(Window),
+    Window(Window),
+    back(Window)
+{
 }
 
 void MainMenu::work() {

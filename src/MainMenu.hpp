@@ -34,6 +34,7 @@ public:
     MainMenu(sf::RenderWindow& Window);
     virtual void work();
     virtual void draw();
+    virtual void init();
 
     virtual const bool& startPressed() const;
     virtual const bool& multiplayerPressed() const;

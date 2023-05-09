@@ -11,16 +11,6 @@
 int main()
 {
 	GameLoop loop;
-	loop.getWindow().setActive(false);
-
-	BackSprite loadBack(loop.getWindow());
-	loadBack.load(TEX_PATH "LoadingBacks/Back1.png");
-
-	bool run = false;
-	Params p = { loop.getWindow(), loadBack, run};
-
-	sf::Thread load_(&loadingWin_, p);
-	load_.launch();
 
 	MainMenu menu(loop.getWindow());
 	Achivments achiv(loop.getWindow());
@@ -36,12 +26,7 @@ int main()
 	loop.addTransfer({ menuIndex, menu.statisticsPressed(), statisIndex });
 	loop.addTransfer({ statisIndex, statis.escPressed(), menuIndex });
 	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
-
-	run = true;
-	load_.wait();
-	loop.getWindow().setActive(true);
 	
 	loop.work();
-
 	return EXIT_SUCCESS;
 }

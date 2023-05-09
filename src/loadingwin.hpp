@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <Vector.hpp>
 #include <BackSprite.hpp>
+#include <functional>
 
 struct Params
 {
@@ -11,4 +12,4 @@ struct Params
 	bool& run;
 };
 
-void loadingWin_(Params& p);
+void loadingWin_(Params& p, const vec3f& baseColor);
