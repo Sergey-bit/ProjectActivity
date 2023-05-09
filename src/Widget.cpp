@@ -27,9 +27,8 @@ void Core::Settings::addGameObject(GameObject*& object)
 	objects_.push_back(object);
 }
 
-Core::GameObject::GameObject(GameObject* object)
+Core::GameObject::GameObject()
 {
-	Settings::addGameObject(object);
 }
 
 std::vector<Core::GameObject*> Core::Settings::objects_;

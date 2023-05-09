@@ -1,9 +1,12 @@
 #pragma once
+
 #include <Frame.hpp>
 #include <Sprite.hpp>
 #include <Button\Button.hpp>
 #include <BackSprite.hpp>
 #include <Widget.hpp>
+#include <SFML/System.hpp>
+#include <functional>
 
 class MainMenu: public Frame {
 private:
@@ -17,8 +20,8 @@ private:
     Button settings;
     Button statistics;
     Button achivments;
-    Button shop;
     Button exit;
+    BackSprite shop;
     BackSprite back;
 
     bool isStartPressed = false;
@@ -26,7 +29,6 @@ private:
     bool isSettingsPressed = false;
     bool isStatisticsPressed = false;
     bool isAchivmentsPressed = false;
-    bool isShopPressed = false;
 
 public:
     MainMenu(sf::RenderWindow& Window);
@@ -38,7 +40,6 @@ public:
     virtual const bool& settingsPressed() const;
     virtual const bool& statisticsPressed() const;
     virtual const bool& achivmentsPressed() const;
-    virtual const bool& shopPressed() const;
     
 };
 

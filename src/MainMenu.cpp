@@ -1,56 +1,67 @@
 #include <MainMenu.hpp>
 
+inline void loadButton(Button& button, const std::string& calmPath,
+    const std::string& hoverPath, const std::string& pressedPath)
+{
+    button.setCalmTexture(calmPath);
+    button.setHoverTexture(hoverPath);
+    button.setPressedTexture(pressedPath);
+}
 
 MainMenu::MainMenu(sf::RenderWindow& Window) :
-	Frame(exchangeIF<unsigned int> ( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),
-    start( Window , vec2i(250 * globalskale, 100 * globalskale)),
-    multiplayer(Window, vec2i(250 * globalskale, 226 * globalskale)),
-    settings(Window, vec2i(250 * globalskale, 350 * globalskale)),
-    statistics(Window, vec2i(250 * globalskale, 474 * globalskale)),
-    achivments(Window, vec2i(250 * globalskale, 598 * globalskale)),
-    shop(Window, vec2i(250 * globalskale, 722 * globalskale)),
-    exit(Window, vec2i(965 * globalskale, 683 * globalskale)),
+	Frame(exchangeIF<unsigned int>( { sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), {0,0}),
+    start( Window , 250 * globalskale, 100 * globalskale),
+    multiplayer(Window, 250 * globalskale, 226 * globalskale),
+    settings(Window, 250 * globalskale, 350 * globalskale),
+    statistics(Window, 250 * globalskale, 474 * globalskale),
+    achivments(Window, 250 * globalskale, 598 * globalskale),
+    exit(Window, 965 * globalskale, 683 * globalskale),
+    shop(Window),
     Window(Window),
     back(Window)
-
 {
-    start.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\StartGameButton\\Calm.png");
-    start.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\StartGameButton\\Hover.png");
-    start.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\StartGameButton\\Pressed.png");
-    start.setScale(globalskale * skalebutton);
-
-    multiplayer.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\PlayingWithFriendsButton\\Calm.png");
-    multiplayer.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\PlayingWithFriendsButton\\Hover.png");
-    multiplayer.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\PlayingWithFriendsButton\\Pressed.png");
-    multiplayer.setScale(globalskale * skalebutton);
-
-    settings.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\SettingsButton\\Calm.png");
-    settings.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\SettingsButton\\Hover.png");
-    settings.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\SettingsButton\\Pressed.png");
-    settings.setScale(globalskale * skalebutton);
-
-    statistics.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\StaticsticsButton\\Calm.png");
-    statistics.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\StaticsticsButton\\Hover.png");
-    statistics.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\StaticsticsButton\\Pressed.png");
-    statistics.setScale(globalskale * skalebutton);
-
-    achivments.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\AchievementButton\\Calm.png");
-    achivments.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\AchievementButton\\Hover.png");
-    achivments.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\AchievementButton\\Pressed.png");
-    achivments.setScale(globalskale * skalebutton);
-
-    shop.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\ShopButton\\Calm.png");
-    shop.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\ShopButton\\Hover.png");
-    shop.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\ShopButton\\Pressed.png");
-    shop.setScale(globalskale * skalebutton);
-
-    exit.setCalmTexture(TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
-    exit.setHoverTexture(TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
-    exit.setPressedTexture(TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
-    exit.setScale(globalskale * 0.3);
-
     back.load(TEX_PATH "MainMenu\\Background\\MainMenuBackground.png");
-    back.setScale(vec2f(globalskale, globalskale));
+    back.setScale(globalskale);
+
+    loadButton(start,
+        TEX_PATH "MainMenu\\Buttons\\StartGameButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\StartGameButton\\Hover.png",
+        TEX_PATH "MainMenu\\Buttons\\StartGameButton\\Pressed.png");
+
+    loadButton(multiplayer,
+        TEX_PATH "MainMenu\\Buttons\\PlayingWithFriendsButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\PlayingWithFriendsButton\\Hover.png",
+        TEX_PATH "MainMenu\\Buttons\\PlayingWithFriendsButton\\Pressed.png");
+
+    loadButton(settings,
+        TEX_PATH "MainMenu\\Buttons\\SettingsButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\SettingsButton\\Hover.png",
+        TEX_PATH "MainMenu\\Buttons\\SettingsButton\\Pressed.png");
+
+    loadButton(statistics,
+        TEX_PATH "MainMenu\\Buttons\\StaticsticsButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\StaticsticsButton\\Hover.png",
+        TEX_PATH "MainMenu\\Buttons\\StaticsticsButton\\Pressed.png");
+
+    loadButton(achivments,
+        TEX_PATH "MainMenu\\Buttons\\AchievementButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\AchievementButton\\Hover.png",
+        TEX_PATH "MainMenu\\Buttons\\AchievementButton\\Pressed.png");
+
+    loadButton(exit,
+        TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png",
+        TEX_PATH "MainMenu\\Buttons\\ExitButton\\Calm.png");
+
+    shop.load(TEX_PATH "MainMenu\\Buttons\\ShopButton\\Calm.png");
+    shop.setPosition({ (int)(250 * globalskale), (int)(722 * globalskale) });
+    exit.setScale(globalskale * 0.3);
+    shop.setScale(globalskale * skalebutton);
+    settings.setScale(globalskale * skalebutton);
+    statistics.setScale(globalskale * skalebutton);
+    achivments.setScale(globalskale * skalebutton);
+    multiplayer.setScale(globalskale * skalebutton);
+    start.setScale(globalskale * skalebutton);
 }
 
 void MainMenu::work() {
@@ -60,10 +71,8 @@ void MainMenu::work() {
     isSettingsPressed = settings.isPressed();
     isStatisticsPressed = statistics.isPressed();
     isAchivmentsPressed = achivments.isPressed();
-    isShopPressed = shop.isPressed();
     if(exit.isPressed()) Window.close();
 }
-
 void MainMenu::draw() {
     back.draw();
     start.draw();
@@ -78,7 +87,6 @@ void MainMenu::draw() {
 const bool& MainMenu::startPressed() const {
     return isStartPressed;
 }
-
 const bool& MainMenu::multiplayerPressed() const {
     return isMultiplayerPressed;
 }
@@ -86,15 +94,10 @@ const bool& MainMenu::multiplayerPressed() const {
 const bool& MainMenu::settingsPressed() const {
     return isSettingsPressed;
 }
-
 const bool& MainMenu::statisticsPressed() const {
     return isStatisticsPressed;
 }
 
 const bool& MainMenu::achivmentsPressed() const {
     return isAchivmentsPressed;
-}
-
-const bool& MainMenu::shopPressed() const {
-    return isShopPressed;
 }

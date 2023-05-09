@@ -9,7 +9,7 @@ namespace Core
 	protected:
 		bool visibility_ = true;
 		
-		GameObject(GameObject* object);
+		GameObject();
 	public:
 		virtual void draw() = 0;
 		virtual void setScale(const vec2f&) = 0;

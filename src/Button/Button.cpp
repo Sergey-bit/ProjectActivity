@@ -1,8 +1,17 @@
 #include <Button\Button.hpp>
 
 Button::Button(sf::RenderWindow& win, const vec2i& pos) :
-	GameObject((GameObject*)this),
 	win_(win), position_(pos),
+	scale_(1.0f, 1.0f)
+{
+	sprites_.push_back(nullptr);
+	sprites_.push_back(nullptr);
+	sprites_.push_back(nullptr);
+}
+
+
+Button::Button(sf::RenderWindow& win, const int& x, const int& y) :
+	win_(win), position_(x, y),
 	scale_(1.0f, 1.0f)
 {
 	sprites_.push_back(nullptr);
@@ -39,38 +48,39 @@ Sprite* Button::loadSprite(const sf::Texture& texture)
 	return s;
 }
 
-void Button::setScale(const float& scale)
+inline void Button::setScale(const float& scale)
 {
-	setScale({ scale, scale });
+	setScale(scale, scale);
 }
-void Button::setScale(const float& xs, const float& ys)
+inline void Button::setScale(const float& xs, const float& ys)
 {
-	setScale({ xs, ys });
-}
-void Button::setScale(const vec2f& scale)
-{
-	scale_ = scale;
+	scale_.x = xs;
+	scale_.y = ys;
 
 	for (auto& s : sprites_)
 	{
 		if (s)
 		{
-			s->getSprite().setScale(scale);
+			s->getSprite().setScale(xs, ys);
 		}
 	}
 }
+inline void Button::setScale(const vec2f& scale)
+{
+	setScale(scale.x, scale.y);
+}
 
-void Button::scale(const float& scale_)
+inline void Button::scale(const float& scale)
 {
-	scale({ scale_, scale_ });
+	setScale(scale * scale_.x, scale * scale_.y);
 }
-void Button::scale(const float& xs, const float& ys)
+inline void Button::scale(const float& xs, const float& ys)
 {
-	scale({ xs, ys });
+	setScale(xs * scale_.x, ys * scale_.y);
 }
-void Button::scale(const vec2f& scale)
+inline void Button::scale(const vec2f& scale)
 {
-	setScale(scale_ * scale);
+	setScale(scale_.x * scale.x, scale_.y * scale.y);
 }
 
 vec2f Button::getScale() const

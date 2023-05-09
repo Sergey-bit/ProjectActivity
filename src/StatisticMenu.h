@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include "BackSprite.hpp"
 
-
 class StatisticMenu: public Frame {
 	sf::RenderWindow& window;
 	BackSprite back;

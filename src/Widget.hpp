@@ -28,4 +28,5 @@ namespace Core
 		static void setGlobalScale(const float& xs, const float& ys);
 		static void setGlobalScale(const vec2f& nvec);
 	};
+
 }

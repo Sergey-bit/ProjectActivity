@@ -30,11 +30,12 @@ protected:
 
 public:
 	Button(sf::RenderWindow& win, const vec2i& pos=vec2i(0, 0));
+	Button(sf::RenderWindow& win, const int& x=0, const int& y=0);
 
 	virtual void draw();
 
-	virtual bool isVisible() const;
-	virtual void setVisibility(bool);
+	inline virtual bool isVisible() const;
+	inline virtual void setVisibility(bool);
 
 	virtual void setHoverTexture(const std::string& filename);
 	virtual void setHoverTexture(const sf::Texture& texture);
@@ -58,16 +59,16 @@ public:
 	virtual std::optional<sf::Sprite> getPressedSprite() const;
 	virtual std::optional<sf::Sprite> getCalmSprite() const;
 
-	virtual vec2f getScale() const;
+	inline virtual vec2f getScale() const;
 
-	virtual bool isHovered() const;
-	virtual bool isPressed() const;
+	inline virtual bool isHovered() const;
+	inline virtual bool isPressed() const;
 
-	virtual void setScale(const float& scale);
-	virtual void setScale(const float& xs, const float& ys);
-	virtual void setScale(const vec2f& scale) override;
+	inline virtual void setScale(const float& scale);
+	inline virtual void setScale(const float& xs, const float& ys);
+	inline virtual void setScale(const vec2f& scale) override;
 
-	virtual void scale(const float& scale_);
-	virtual void scale(const float& xs, const float& ys);
-	virtual void scale(const vec2f& scale_);
+	inline virtual void scale(const float& scale_);
+	inline virtual void scale(const float& xs, const float& ys);
+	inline  void scale(const vec2f& scale_);
 };
