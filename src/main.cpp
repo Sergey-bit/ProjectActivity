@@ -23,7 +23,6 @@ int main()
 	loop.addTransfer({ menuIndex, menu.achivmentsPressed(), achivIndex });
 	loop.addTransfer({ menuIndex, menu.statisticsPressed(), statisIndex });
 
-	loop.addTransfer({ menuIndex, menu.statisticsPressed(), statisIndex });
 	loop.addTransfer({ statisIndex, statis.escPressed(), menuIndex });
 	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
 	

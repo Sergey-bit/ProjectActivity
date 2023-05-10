@@ -6,7 +6,7 @@ GameLoop::GameLoop() :
 	win_(sf::VideoMode::getDesktopMode(), "BattleRoyal", sf::Style::Fullscreen),
 	currentFrame_(0)
 {
-
+	win_.setVerticalSyncEnabled(true);
 }
 
 void GameLoop::init()
