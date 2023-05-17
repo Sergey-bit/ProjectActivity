@@ -49,6 +49,25 @@ void GameLoop::work()
 			{
 				win_.close();
 			}
+			else
+			{
+				if (event.type == sf::Event::TextEntered)
+				{
+					Core::Settings::entered = event.text.unicode;
+				}
+				else
+				{
+					Core::Settings::entered.clear();
+				}
+				if (event.type == sf::Event::MouseWheelScrolled)
+				{
+					Core::Settings::mouseWheelMoved = event.mouseWheel.delta;
+				}
+				else
+				{
+					Core::Settings::mouseWheelMoved = 0;
+				}
+			}
 		}
 
 		win_.clear();
