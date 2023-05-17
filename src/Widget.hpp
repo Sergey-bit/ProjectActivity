@@ -20,7 +20,7 @@ namespace Core
 		static vec2f scale_;
 
 	public:
-		static std::string entered;
+		static char entered;
 		static int mouseWheelMoved;
 
 		static void addGameObject(GameObject*& object);
