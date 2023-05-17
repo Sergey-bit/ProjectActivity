@@ -33,5 +33,5 @@ Core::GameObject::GameObject()
 
 std::vector<Core::GameObject*> Core::Settings::objects_;
 vec2f Core::Settings::scale_(1.f, 1.f);
-std::string Core::Settings::entered;
+char Core::Settings::entered;
 int Core::Settings::mouseWheelMoved = 0;
