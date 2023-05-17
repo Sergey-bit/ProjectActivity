@@ -57,7 +57,7 @@ void GameLoop::work()
 				}
 				else
 				{
-					Core::Settings::entered.clear();
+					Core::Settings::entered = '\0';
 				}
 				if (event.type == sf::Event::MouseWheelScrolled)
 				{
