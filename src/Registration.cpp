@@ -18,8 +18,13 @@ void Registration::init() {
 	
 	loginTextBox.setFont(font);
 	loginTextBox.setLength(20);
-	loginTextBox.setPlaceholder("enret login");
-	loginTextBox.setPosition(vec2f(5, 5));
+	loginTextBox.setPosition(vec2f(666, 135) * globalskale);
+	loginTextBox.setsize(vec2f(642, 69) * globalskale);
+	passwordTextBox.setFont(font);
+	passwordTextBox.setLength(20);
+	passwordTextBox.setPosition(vec2f(666, 258) * globalskale);
+	passwordTextBox.setsize(vec2f(642, 69) * globalskale);
+	//sd.Left
 }
 
 Registration::Registration(sf::RenderWindow& Window) :
@@ -34,15 +39,26 @@ Registration::Registration(sf::RenderWindow& Window) :
 
 void Registration::work() {
 	draw();
-	isStartPressed = start.isPressed();
+
+	loginTextBox.input();
+	passwordTextBox.input('*');
+
+	if (start.isPressed()) {
+		autorize()
+	}
 }
 
 void Registration::draw() {
 	back.draw();
 	start.draw();
 	loginTextBox.render(Window);
+	passwordTextBox.render(Window);
 }
 
-const bool& Registration::startPressed() const {
-	return isStartPressed;
+const bool& Registration::autorized() const {
+	return isAutorized;
+}
+
+void Registration::autorize() {
+
 }

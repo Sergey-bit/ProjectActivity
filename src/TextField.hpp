@@ -4,6 +4,9 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <Frame.hpp>
+#include <Object.hpp>
+#include <iostream>
 
 const int GUI_TEXT_MAX = 24;
 const int GUI_TEXT_BACKSPACE = 8;
@@ -16,39 +19,39 @@ public:
 	TextField();
 
 	void setPosition(sf::Vector2f vec);
-
-	void input(sf::Event ev);
+	void input(const char& s='\n');
 
 	void setFont(sf::Font& f);
-
-	const sf::String& getText();
+	const std::string& getText() const;
 
 	void setPlaceholder(std::string str);
-
 	void render(sf::RenderWindow& window);
 
 	void setLength(int arg);
+	int getTextLength() const;
 
-	int getTextLength();
-
-	bool isActive();
-
+	bool isActive() const;
 	void open();
-private:
+	 
+	void close();
+	void setsize(sf::Vector2f vec);
+
 	sf::Text txt;
 	sf::RectangleShape box;
+	sf::Vector2f pos;
+
+
+private:
+
+	sf::Mouse mouse;
+	int count = 0;
 
 	int size;
-
 	int length;
 
 	bool renderPlaceholder;
-
 	void setActive(bool arg);
 
 	bool active;
-
-	sf::Vector2f pos;
-
 	std::string placeholder;
 };

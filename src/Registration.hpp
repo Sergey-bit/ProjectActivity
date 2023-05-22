@@ -14,23 +14,22 @@ private:
 	Button start;
 	Button exit;
 
-	//sf::String loginInput;
-	//sf::Text loginText;
-
-	//sf::String passwordInput;
-	//sf::Text passwordText;
-
-	bool isStartPressed = false;
+	bool isAutorized = false;
 	
-	//std::string login;
-	//std::string password;
+	void autorize();
+	
 
 	sf::Font font;
 
-	sf::RectangleShape inputTextRect1;
-
 	TextField loginTextBox;
 	TextField passwordTextBox;
+
+	Core::Settings qwe;
+
+	sf::Mouse m;
+	sf::Vector2f pos;
+
+	sf::Keyboard k;
 	
 
 public:
@@ -38,7 +37,7 @@ public:
 	virtual void work();
 	virtual void init();
 	virtual void draw();
-	virtual const bool& startPressed() const;
+	virtual const bool& autorized() const;
 
 
 

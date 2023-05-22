@@ -29,6 +29,7 @@ int main()
 
 	loop.addTransfer({ statisIndex, statis.escPressed(), menuIndex });
 	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
+	loop.addTransfer({ regisIndex, regis.startPressed(), menuIndex});
 	
 	loop.work();
 	return EXIT_SUCCESS;
