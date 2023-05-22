@@ -46,6 +46,8 @@ private:
 	sf::Mouse mouse;
 	int count = 0;
 
+	std::string mes;
+
 	int size;
 	int length;
 

@@ -35,7 +35,8 @@ Registration::Registration(sf::RenderWindow& Window) :
 	exit(Window, 0, 0)
 
 {	
-}
+
+}	
 
 void Registration::work() {
 	draw();
@@ -44,7 +45,7 @@ void Registration::work() {
 	passwordTextBox.input('*');
 
 	if (start.isPressed()) {
-		autorize()
+		autorize();
 	}
 }
 
@@ -60,5 +61,15 @@ const bool& Registration::autorized() const {
 }
 
 void Registration::autorize() {
+	q = "username:" + loginTextBox.getText() + ";password:" + passwordTextBox.getText() + "\n";
+	TalkToSvr::start(ip::tcp::endpoint(ip::address::from_string("25.34.39.164"), 8001), q);
+	service.run();
 
+	const std::string& answer = TalkToSvr::getAnswer();
+
+	std::cout << answer;
+
+	if (answer.length() && answer[0] == '1') {
+		isAutorized = true;
+	}
 }

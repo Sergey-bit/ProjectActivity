@@ -34,7 +34,7 @@ void TextField::setsize(sf::Vector2f vec) {
 
 void TextField::input(const char& s) {
 
-	if (sf::Event::MouseButtonReleased) {
+	if (mouse.isButtonPressed(sf::Mouse::Left)) {
 		sf::Vector2f pos(mouse.getPosition());
 		if (box.getGlobalBounds().contains(pos)) {
 			setActive(true);
@@ -44,7 +44,7 @@ void TextField::input(const char& s) {
 		}
 	}
 
-	if (active && Core::Settings::entered && (count%5 == 0 )) {
+	if (active && Core::Settings::entered && (count % 3 == 0 )) {
 		
 		sf::String str = txt.getString();
 
@@ -52,6 +52,7 @@ void TextField::input(const char& s) {
 			if (str.getSize() > 0) {
 				length--;
 				str = str.substring(0, str.getSize() - 1);
+				mes = mes.substr(0, mes.length() - 1);
 			}
 		}
 		else if (Core::Settings::entered == GUI_TEXT_ESCAPE) {
@@ -61,6 +62,7 @@ void TextField::input(const char& s) {
 			sf::String sfstr = "";
 			sfstr += Core::Settings::entered;
 			str += sfstr.toAnsiString();
+			mes += sfstr.toAnsiString();
 		}
 
 		if (str.getSize() == size) return;
@@ -94,7 +96,8 @@ void TextField::setFont(sf::Font& f) {
 }
 
 const std::string& TextField::getText() const {
-	return txt.getString();
+	return mes;
+
 }
 
 void TextField::render(sf::RenderWindow& window) {

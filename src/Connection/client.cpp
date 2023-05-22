@@ -1,8 +1,14 @@
 #include <Connection/client.hpp>
 
-TalkToSvr::TalkToSvr(const std::string& message) : sock_(service), started_(true), message_(message)
-{
 
+extern io_service service{};
+
+std::string TalkToSvr::message_;
+bool TalkToSvr::gotten_ = false;
+
+TalkToSvr::TalkToSvr(const std::string& message) : sock_(service), started_(true)
+{
+    message_ = message;
 }
 TalkToSvr::ptr TalkToSvr::start(ip::tcp::endpoint ep, const std::string& message)
 {
@@ -43,8 +49,13 @@ void TalkToSvr::on_read(const error_code& err, size_t bytes)
 {
     if (!err) {
         std::string copy(read_buffer_, bytes - 1);
-        std::cout << "server echoed our " << message_ << ": "
-            << (copy == message_ ? "OK" : "FAIL") << std::endl;
+        message_ = copy;
+
+        gotten_ = true;
+    }
+    else
+    {
+        std::cout << err.value() << std::endl;
     }
     stop();
 }
@@ -82,4 +93,16 @@ size_t TalkToSvr::read_complete(const boost::system::error_code& err, size_t byt
 
     // we read one-by-one until we get to enter, no buffering
     return found ? 0 : 1;
+}
+
+const std::string& TalkToSvr::getAnswer()
+{
+    if (gotten_)
+    {
+        return message_;
+    }
+    else
+    {
+        return "";
+    }
 }

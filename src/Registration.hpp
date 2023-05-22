@@ -4,6 +4,7 @@
 #include <BackSprite.hpp>
 #include <Button/Button.hpp>
 #include <TextField.hpp>
+#include <Connection/client.hpp>
 
 class Registration: public Frame
 {
@@ -16,8 +17,7 @@ private:
 
 	bool isAutorized = false;
 	
-	void autorize();
-	
+	void autorize();	
 
 	sf::Font font;
 
@@ -31,15 +31,13 @@ private:
 
 	sf::Keyboard k;
 	
-
+	std::string q;
 public:
 	Registration(sf::RenderWindow& Window);
 	virtual void work();
 	virtual void init();
 	virtual void draw();
 	virtual const bool& autorized() const;
-
-
 
 };
 

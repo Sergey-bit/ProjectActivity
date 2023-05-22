@@ -18,18 +18,18 @@ int main()
 	StatisticMenu statis(loop.getWindow());
 	Registration regis(loop.getWindow());
 
+	GameLoop::index regisIndex = loop.addFrame(&regis);
 	GameLoop::index menuIndex = loop.addFrame(&menu);
 	GameLoop::index achivIndex = loop.addFrame(&achiv);
 	GameLoop::index statisIndex = loop.addFrame(&statis);
-	GameLoop::index regisIndex = loop.addFrame(&regis);
 
 	loop.addTransfer({ menuIndex, menu.achivmentsPressed(), achivIndex });
 	loop.addTransfer({ menuIndex, menu.statisticsPressed(), statisIndex });
-	loop.addTransfer({ menuIndex, menu.startPressed(), regisIndex});
+	
 
 	loop.addTransfer({ statisIndex, statis.escPressed(), menuIndex });
 	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
-	loop.addTransfer({ regisIndex, regis.startPressed(), menuIndex});
+	loop.addTransfer({ regisIndex, regis.autorized(), menuIndex});
 	
 	loop.work();
 	return EXIT_SUCCESS;

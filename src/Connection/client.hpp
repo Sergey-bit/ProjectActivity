@@ -8,13 +8,14 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/core/noncopyable.hpp>
+#include <socketapi.h>
 
 #define MEM_FN(x) boost::bind(&self_type::x, shared_from_this())
 #define MEM_FN1(x,y) boost::bind(&self_type::x, shared_from_this(),y)
 #define MEM_FN2(x,y,z) boost::bind(&self_type::x, shared_from_this(),y,z)
 
 using namespace boost::asio;
-io_service service;
+extern io_service service;
 
 
 class TalkToSvr : public boost::enable_shared_from_this<TalkToSvr>,
@@ -35,6 +36,8 @@ public:
     void stop();
     bool started();
 
+    static const std::string& getAnswer();
+
 private:
     void on_connect(const error_code& err);
     void on_read(const error_code& err, size_t bytes);
@@ -45,12 +48,14 @@ private:
     void do_write(const std::string& msg);
     size_t read_complete(const boost::system::error_code& err, size_t bytes);
 
+
 private:
     enum { max_msg = 1024 };
     bool started_;
 
     ip::tcp::socket sock_;
-    std::string message_;
+    static std::string message_;
+    static bool gotten_;
 
     char read_buffer_[max_msg];
     char write_buffer_[max_msg];
