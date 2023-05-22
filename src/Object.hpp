@@ -18,6 +18,6 @@ namespace Core
 		virtual void setScale(const vec2f&);
 
 		virtual bool isVisible() const;
-		virtual void setVisibility(bool) ;
+		virtual void setVisibility(bool);
 	};
 }
