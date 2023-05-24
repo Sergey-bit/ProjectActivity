@@ -1,4 +1,8 @@
 #include <Connection/server.hpp>
+#include <iostream>
+
+extern io_service service{};
+extern ip::tcp::acceptor acceptor(service, ip::tcp::endpoint(ip::tcp::v4(), 8001));
 
 TalkToCl::TalkToCl() : sock_(service), started_(false)
 {
@@ -35,8 +39,9 @@ void TalkToCl::on_read(const error_code& err, size_t bytes)
     if (!err)
     {
         std::string msg(read_buffer_, bytes);
+        std::cout << msg;
         // echo message back, and then stop
-        do_write(msg + "\n");
+        do_write("1\n");
     }
     stop();
 }

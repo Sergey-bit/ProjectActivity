@@ -72,3 +72,15 @@ vec2f operator/(const vec2<T>& vec1, const vec2<T>& vec2)
 {
 	return vec2f(vec1.x / vec2.x, vec1.y / vec2.y);
 }
+
+template<typename T>
+T dot(const T& vec1, const T& vec2)
+{
+	return vec1.x * vec2.x + vec1.y * vec2.y;
+}
+
+template<typename T>
+double length(const T& vec)
+{
+	return pow(vec.x * vec.x + vec.y * vec.y, 0.5);
+}

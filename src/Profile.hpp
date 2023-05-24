@@ -5,7 +5,7 @@
 
 class Profile
 {
-public: 
+private: 
 	std::string name;
 	std::string rank;
 	std::string winsPercentage;
@@ -14,7 +14,7 @@ public:
 	std::string KDA;
 	std::string matchesPlayed;
 	std::string averMatchTime;
-private: 
+public: 
 	Profile();
 	virtual std::string getname();
 	virtual std::string getrank();

@@ -98,3 +98,12 @@ vec2i GameLoop::getWinSize() const
 {
 	return exchangeIF<unsigned>(win_.getSize());
 }
+
+Profile& GameLoop::getProfile()
+{
+	return profile_;
+}
+const Profile& GameLoop::getProfile() const
+{
+	return profile_;
+}
