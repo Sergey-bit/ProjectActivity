@@ -9,6 +9,17 @@
 
 namespace Core
 {
+	enum  Eqiupment {
+		BIG_HEAL,
+		SMALL_HEAL,
+		ARMOR1,
+		SNIPER,
+		SOFF_SHOTGUN,
+		SHOTGUN,
+		MINIGUN,
+		UZI,
+		RIFLE,
+	};
 	class GameObject;
 
 	class Settings final

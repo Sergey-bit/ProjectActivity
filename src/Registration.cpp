@@ -24,15 +24,15 @@ void Registration::init() {
 	passwordTextBox.setLength(20);
 	passwordTextBox.setPosition(vec2f(666, 258) * globalskale);
 	passwordTextBox.setsize(vec2f(642, 69) * globalskale);
-	//sd.Left
 }
 
-Registration::Registration(sf::RenderWindow& Window) :
+Registration::Registration(sf::RenderWindow& Window, Profile& prof) :
 	Frame(exchangeIF<unsigned int>({ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height }), { 0,0 }),
 	Window(Window),
 	back(Window),
 	start(Window, 1550 * globalskale, 60 * globalskale),
-	exit(Window, 0, 0)
+	exit(Window, 0, 0),
+	prof(prof)
 
 {	
 
@@ -71,5 +71,15 @@ void Registration::autorize() {
 
 	if (answer.length() && answer[0] == '1') {
 		isAutorized = true;
+
+		prof.setname("proverka");
+		prof.setrank("1");
+		prof.setwinsPercentage("");
+		prof.setkills("");
+		prof.setfavWeapon("");
+		prof.setKDA("");
+		prof.setmatchesPlayed("");
+		prof.setaverMatchTime("");
+
 	}
 }

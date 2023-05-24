@@ -5,6 +5,7 @@
 #include <Button/Button.hpp>
 #include <TextField.hpp>
 #include <Connection/client.hpp>
+#include <Profile.hpp>
 
 class Registration: public Frame
 {
@@ -14,7 +15,7 @@ private:
 	BackSprite back;
 	Button start;
 	Button exit;
-
+	Profile prof;
 	bool isAutorized = false;
 	
 	void autorize();	
@@ -30,10 +31,9 @@ private:
 	sf::Vector2f pos;
 
 	sf::Keyboard k;
-	
 	std::string q;
 public:
-	Registration(sf::RenderWindow& Window);
+	Registration(sf::RenderWindow& Window, Profile& prof);
 	virtual void work();
 	virtual void init();
 	virtual void draw();
