@@ -11,6 +11,9 @@ class Chest: Core::GameObject
 public:
 	Chest();
 	void setItem();
+	void open();
+	void getItem();
+
 
 private:
 	using equip = Core::Eqiupment;
