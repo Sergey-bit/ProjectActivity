@@ -1,9 +1,16 @@
 #include <player.hpp>
 
-Player::Player(sf::RenderWindow& win, Profile& profile) : win_(win), profile_(profile)
+Player::Player(sf::RenderWindow& win, Profile& profile) : win_(win), profile_(profile), line(sf::Lines, 2), size(win.getSize())
 {
-
+	pos_.x = win_.getSize().x / 2;
+	pos_.y = win_.getSize().y / 2;
+	player.setFillColor(sf::Color::Magenta);
+	player.setSize({50, 30});
+	player.setPosition(pos_);
+	//line[0].color = sf::Color::White;
+	//line[1].color = sf::Color::Magenta;
 }
+
 void Player::lookAt(const float& angle)
 {
 	angle_ = angle;
@@ -11,15 +18,60 @@ void Player::lookAt(const float& angle)
 
 void Player::lookingAround()
 {
-	vec2i ray = sf::Mouse::getPosition() - pos_;
-	angle_ = std::acos(ray.x / length(ray)) * 180.0 / PI;
-
-	if (ray.y < 0)
-	{
-		angle_ += 180.0f;
-	}
+	lookdir = exchangeIF(sf::Mouse::getPosition()) - pos_;
+	angle_ = atan2(lookdir.y, lookdir.x) * (180 / PI) - 90.0f;
+	player.setRotation(angle_);
 }
+
+void Player::tracking()
+{
+	float angle = atan2(lookdir.y, lookdir.x);
+	line[0].position = pos_;
+	line[1].position = { pos_.x + size.x * cos(angle), pos_.y + size.x * sin(angle) };
+}
+
+void Player::move()
+{
+	float cos_a(cos(angle_)), sin_a(sin(angle_));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ((pos_.y - speed) > 0))
+	{
+		pos_.y -= speed;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos_.y + speed) < size.y))
+	{
+		pos_.y += speed;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ((pos_.x - speed) > 0))
+	{
+		pos_.x -= speed;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos_.x + speed) < size.x))
+	{
+		pos_.x += speed;
+	}
+	player.setPosition(pos_);
+}
+
 const float& Player::getAngle() const
 {
 	return angle_;
+}
+
+void Player::draw()
+{
+	sf::Text txt1, txt2;
+	sf::Font font;
+	font.loadFromFile(FONT_PATH "Roboto-Bolt.ttf");
+	txt1.setFont(font);
+	txt1.setString("x " + std::to_string(pos_.x));
+
+	txt2.setPosition({ 0, 50 });
+	txt2.setFont(font);
+	txt2.setString("y " + std::to_string(pos_.y));
+
+
+	win_.draw(player);
+	win_.draw(line);
+	win_.draw(txt1);
+	win_.draw(txt2);
 }
