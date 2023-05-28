@@ -7,8 +7,6 @@ Player::Player(sf::RenderWindow& win, Profile& profile) : win_(win), profile_(pr
 	player.setFillColor(sf::Color::Magenta);
 	player.setSize({50, 30});
 	player.setPosition(pos_);
-	//line[0].color = sf::Color::White;
-	//line[1].color = sf::Color::Magenta;
 }
 
 void Player::lookAt(const float& angle)
@@ -59,19 +57,6 @@ const float& Player::getAngle() const
 
 void Player::draw()
 {
-	sf::Text txt1, txt2;
-	sf::Font font;
-	font.loadFromFile(FONT_PATH "Roboto-Bolt.ttf");
-	txt1.setFont(font);
-	txt1.setString("x " + std::to_string(pos_.x));
-
-	txt2.setPosition({ 0, 50 });
-	txt2.setFont(font);
-	txt2.setString("y " + std::to_string(pos_.y));
-
-
 	win_.draw(player);
 	win_.draw(line);
-	win_.draw(txt1);
-	win_.draw(txt2);
 }
