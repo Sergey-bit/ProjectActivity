@@ -25,5 +25,8 @@ public:
 	sf::Sprite& getSprite();
 
 	void setPosition(const vec2i& npos);
+	const vec2f& getPosition() const;
+
 	vec2u getSize() const;
+	void setSize(const vec2i& nsize);
 };

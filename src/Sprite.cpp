@@ -12,6 +12,15 @@ Sprite::~Sprite()
 	}
 }
 
+const vec2f& Sprite::getPosition() const
+{
+	return sprite.getPosition();
+}
+void Sprite::setSize(const vec2i& nsize)
+{
+	sprite.setScale(nsize / exchangeIF<unsigned>(getSize()));
+}
+
 void Sprite::load(const sf::Sprite& sprite)
 {
 	texture = new sf::Texture(*sprite.getTexture());
@@ -28,6 +37,7 @@ void Sprite::load(const sf::Image& sprite)
 
 	this->sprite.setTexture(*texture);
 }
+
 void Sprite::load(const sf::Texture& sprite)
 {
 	texture = new sf::Texture(sprite);
@@ -61,4 +71,9 @@ void Sprite::setPosition(const vec2i& npos)
 vec2u Sprite::getSize() const
 {
 	return texture->getSize();
+}
+
+void Sprite::scale(const double& f)
+{
+	sprite.scale({ f, f });
 }
