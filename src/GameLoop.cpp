@@ -29,6 +29,8 @@ GameLoop::index GameLoop::addFrame(Frame* frame)
 
 void GameLoop::work()
 {
+	srand((unsigned int)time(NULL));
+
 	sf::Thread thread(&GameLoop::init, this);
 
 	BackSprite loadBack(win_);
