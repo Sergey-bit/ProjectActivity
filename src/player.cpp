@@ -28,9 +28,13 @@ void Player::tracking()
 	line[1].position = { pos_.x + size.x * cos(angle), pos_.y + size.x * sin(angle) };
 }
 
+void Player::setAmmo(int ammo)
+{
+	ammoSize = ammo;
+}
+
 void Player::move()
 {
-	float cos_a(cos(angle_)), sin_a(sin(angle_));
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ((pos_.y - speed) > 0))
 	{
 		pos_.y -= speed;
@@ -48,6 +52,34 @@ void Player::move()
 		pos_.x += speed;
 	}
 	player.setPosition(pos_);
+}
+
+void Player::fire()
+{
+	for (int i = 0; i < ammo.size(); i++)
+	{
+		ammo[i].object.move(ammo[i].currVelocity);
+		win_.draw(ammo[i].object);
+
+		if (ammo[i].object.getPosition().x < 0 || ammo[i].object.getPosition().x > size.x
+			|| ammo[i].object.getPosition().y < 0 || ammo[i].object.getPosition().y > size.y)
+			ammo.erase(ammo.begin() + i);
+	}
+}
+
+void Player::shooting()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		lookdirnorm = lookdir / sqrt(lookdir.x * lookdir.x + lookdir.y * lookdir.y);
+		Bullet bullet;
+		bullet.object.setRadius(6);
+		bullet.pos_ = { pos_.x, pos_.y + 10 };
+		bullet.object.setPosition(bullet.pos_);
+		bullet.currVelocity = lookdirnorm * bullet.velocity;
+		ammo.push_back(bullet);
+		fire();
+	}
 }
 
 const float& Player::getAngle() const

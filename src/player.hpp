@@ -10,13 +10,22 @@
 class Player : virtual public Core::GameObject
 {
 private:
-	vec2f pos_, lookdir, size;
+	vec2f pos_, lookdir, lookdirnorm, size;
 	Profile& profile_;
 
-	float angle_ = 0.f, speed = 0.5f;
+	float angle_ = 0.f, speed = 5.0f;
+	int ammoSize;
 	sf::RenderWindow& win_;
 	sf::RectangleShape player;
 	sf::VertexArray line;
+
+	struct Bullet
+	{
+		vec2f pos_, currVelocity;
+		float velocity = 60;
+		sf::CircleShape object;
+	};
+	std::vector<Bullet> ammo;
 
 public:
 	Player(sf::RenderWindow& win, Profile& profile);
@@ -28,6 +37,10 @@ public:
 	void move();
 	void lookingAround();
 	void tracking();
+	void setAmmo(int ammo);
+	void fire();
+	void shooting();
+	void collide();
 
 	virtual void draw();
 };
