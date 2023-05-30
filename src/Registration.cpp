@@ -33,7 +33,7 @@ Registration::Registration(sf::RenderWindow& Window, Profile& prof) :
 	start(Window, 1550 * globalskale, 60 * globalskale),
 	exit(Window, 0, 0),
 	prof(prof)
-
+	
 {	
 
 }	
@@ -73,13 +73,15 @@ void Registration::autorize() {
 		isAutorized = true;
 
 		prof.setname("proverka");
-		prof.setrank("1");
+		prof.setrank("5");
 		prof.setwinsPercentage("");
 		prof.setkills("");
 		prof.setfavWeapon("");
 		prof.setKDA("");
 		prof.setmatchesPlayed("");
 		prof.setaverMatchTime("");
+
+
 
 	}
 }

@@ -15,7 +15,8 @@ private:
 	BackSprite back;
 	Button start;
 	Button exit;
-	Profile prof;
+
+	Profile & prof;
 	bool isAutorized = false;
 	
 	void autorize();	

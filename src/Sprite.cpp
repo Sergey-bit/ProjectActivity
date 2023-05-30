@@ -73,7 +73,7 @@ vec2u Sprite::getSize() const
 	return texture->getSize();
 }
 
-void Sprite::scale(const double& f)
-{
-	sprite.scale({ f, f });
-}
+//void Sprite::scale(const double& f)
+//{
+//	sprite.scale({ f, f });
+//}

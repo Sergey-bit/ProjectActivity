@@ -31,9 +31,9 @@ int main()
 	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
 	loop.addTransfer({ regisIndex, regis.autorized(), menuIndex});
 
-	std::cout << loop.getProfile().getname();
-	std::cout << loop.getProfile().getrank();
 	
+
+		
 	loop.work();
 	return EXIT_SUCCESS;
 }
