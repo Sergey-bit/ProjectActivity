@@ -4,7 +4,6 @@ BackSprite::BackSprite(sf::RenderWindow& window) :
 	win_(window), scale_(1.f, 1.f)
 {
 
-
 }
 
 void BackSprite::draw()

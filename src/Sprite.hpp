@@ -29,4 +29,6 @@ public:
 
 	vec2u getSize() const;
 	void setSize(const vec2i& nsize);
+
+	void scale(const double& f);
 };
