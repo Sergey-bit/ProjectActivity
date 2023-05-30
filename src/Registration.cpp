@@ -61,27 +61,27 @@ const bool& Registration::autorized() const {
 }
 
 void Registration::autorize() {
-	q = "username:" + loginTextBox.getText() + ";password:" + passwordTextBox.getText() + "\n";
-	TalkToSvr::start(ip::tcp::endpoint(ip::address::from_string("25.34.39.164"), 8001), q);
-	service.run();
+	//q = "username:" + loginTextBox.getText() + ";password:" + passwordTextBox.getText() + "\n";
+	////TalkToSvr::start(ip::tcp::endpoint(ip::address::from_string("25.34.39.164"), 8001), q);
+	//service.run();
 
-	const std::string& answer = TalkToSvr::getAnswer();
+	////const std::string& answer = TalkToSvr::getAnswer();
 
-	std::cout << answer;
+	//std::cout << answer;
 
-	if (answer.length() && answer[0] == '1') {
+	//if (answer.length() && answer[0] == '1') {
 		isAutorized = true;
 
-		prof.setname("proverka");
-		prof.setrank("5");
-		prof.setwinsPercentage("");
-		prof.setkills("");
-		prof.setfavWeapon("");
-		prof.setKDA("");
-		prof.setmatchesPlayed("");
-		prof.setaverMatchTime("");
+	//	prof.setname("proverka");
+	//	prof.setrank("5");
+	//	prof.setwinsPercentage("");
+	//	prof.setkills("");
+	//	prof.setfavWeapon("");
+	//	prof.setKDA("");
+	//	prof.setmatchesPlayed("");
+	//	prof.setaverMatchTime("");
 
 
 
-	}
+	//}
 }
