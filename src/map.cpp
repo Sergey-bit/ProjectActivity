@@ -13,9 +13,16 @@ void fillRoom(Map::matrix& map, int dx, int dy, int offX, int offY, Map::Texture
 	}
 }
 
-Map::Map()
+Map::Map(sf::RenderWindow& win) : win_(win), floor3_(win), wall_(win), 
+floor2_(win), floor_(win), shrub_(win)
 {
 	#define FILL(dx, dy, x, y, filling) fillRoom(map_, dx, dy, x, y, filling)
+
+	floor3_.load(MAP_TEXTURES "\\floor_stone.png");
+	floor2_.load(MAP_TEXTURES "\\floor_wood.png");
+	floor_.load(MAP_TEXTURES "\\floor_gray.png");
+	wall_.load(MAP_TEXTURES "\\wall.png");
+	shrub_.load(MAP_TEXTURES "\\cust.png");
 
 	// BATHROOM
 	for (int i = 0; i < 8; i++)
@@ -182,4 +189,40 @@ Map::Map()
 	FILL(1, 5, 38, 6, WALL);
 	FILL(4, 1, 33, 11, WALL);
 	FILL(11, 1, 40, 11, WALL);
+}
+
+void Map::draw()
+{
+	for (int i = 0; i < map_.size(); i++)
+	{
+		for (int j = 0; j < map_[i].size(); j++)
+		{
+			vec2i pos(i * 50, j * 50);
+			switch (map_[i][j])
+			{
+			case FLOOR3:
+				floor3_.setPosition(pos);
+				floor3_.draw();
+				continue;
+			case FLOOR2:
+				floor2_.setPosition(pos);
+				floor2_.draw();
+				continue;
+			case FLOOR1:
+				floor_.setPosition(pos);
+				floor_.draw();
+				continue;
+			case WALL:
+				wall_.setPosition(pos);
+				wall_.draw();
+				continue;
+			case SHRUB:
+				floor_.setPosition(pos);
+				floor_.draw();
+				shrub_.setPosition(pos);
+				shrub_.draw();
+				continue;
+			}
+		}
+	}
 }

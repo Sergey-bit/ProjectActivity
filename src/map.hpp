@@ -2,6 +2,9 @@
 
 #include <array>
 #include <BackSprite.hpp>
+#include <Vector.hpp>
+
+#define MAP_TEXTURES "ProjectActivity\\resources\\textures\\MapTextures"
 
 #define N 51
 #define M 40
@@ -30,8 +33,17 @@ public:
 	using matrix = std::array<std::array<Textures, M>, N>;
 
 public:
-	Map();
+	Map(sf::RenderWindow& win);
+
+	void draw();
 
 private:
-	matrix map_
+	matrix map_;
+	sf::RenderWindow& win_;
+
+	BackSprite floor3_;
+	BackSprite floor2_;
+	BackSprite floor_;
+	BackSprite wall_;
+	BackSprite shrub_;
 };
