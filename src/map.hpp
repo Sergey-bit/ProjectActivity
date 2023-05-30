@@ -11,6 +11,7 @@ class Map final
 public:
 	enum Textures
 	{
+		VOID,
 		WALL,
 		FLOOR1, // Gray version
 		FLOOR2, // Wood version
@@ -23,8 +24,7 @@ public:
 		CHAIR,
 		ARM_CHAIR,
 		SINK,
-		TOILET,
-		VOID
+		TOILET
 
 	};
 	using matrix = std::array<std::array<Textures, M>, N>;

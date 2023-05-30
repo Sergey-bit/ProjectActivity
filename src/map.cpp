@@ -2,8 +2,21 @@
 
 #include <map.hpp>
 
+void fillRoom(Map::matrix& map, int dx, int dy, int offX, int offY, Map::Textures filling)
+{
+	for (int i = 0; i < dx; i++)
+	{
+		for (int j = 0; j < dy; j++)
+		{
+			map[offX + i][offY + j] = filling;
+		}
+	}
+}
+
 Map::Map()
 {
+	#define FILL(dx, dy, x, y, filling) fillRoom(map_, dx, dy, x, y, filling)
+
 	// BATHROOM
 	for (int i = 0; i < 8; i++)
 	{
@@ -113,6 +126,10 @@ Map::Map()
 	map_[31][4] = FLOOR3;
 	map_[31][4] = FLOOR3;
 
+	map_[32][2] = WALL;
+	map_[32][3] = WALL;
+	map_[32][4] = WALL;
+
 	for (int i = 0; i < 8; i++)
 	{
 		map_[13 + i][4] = WALL;
@@ -160,4 +177,9 @@ Map::Map()
 			map_[14 + i][5 + j] = FLOOR3;
 		}
 	}
+
+	FILL(10, 5, 31, 6, FLOOR3);
+	FILL(1, 5, 38, 6, WALL);
+	FILL(4, 1, 33, 11, WALL);
+	FILL(11, 1, 40, 11, WALL);
 }
