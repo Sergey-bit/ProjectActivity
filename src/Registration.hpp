@@ -4,7 +4,6 @@
 #include <BackSprite.hpp>
 #include <Button/Button.hpp>
 #include <TextField.hpp>
-#include <Connection/client.hpp>
 #include <Profile.hpp>
 
 class Registration: public Frame
