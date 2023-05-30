@@ -4,14 +4,12 @@
 #include <player.hpp>
 #include <map.hpp>
 #include <Vector.hpp>
-#include <Connection/ClientUp.hpp>
 
 class World
 {
 private:
 	sf::RenderWindow& win_;
 	Map map_;
-	Client& client_;
 
 public:
 	World(sf::RenderWindow& win);
