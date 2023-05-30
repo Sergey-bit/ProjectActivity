@@ -100,7 +100,7 @@ floor2_(win), floor_(win), shrub_(win)
 	{
 		for (int j = 0; j < 5; j++)
 		{
-			map_[7 + i][11 + j] = FLOOR3
+			map_[7 + i][11 + j] = FLOOR3;
 		}
 	}
 	for (int i = 0; i < 5; i++)
@@ -179,7 +179,7 @@ floor2_(win), floor_(win), shrub_(win)
 	}
 	for (int i = 0; i < 16; i++)
 	{
-		for (int j = 0; j < 7)
+		for (int j = 0; j < 7; j++)
 		{
 			map_[14 + i][5 + j] = FLOOR3;
 		}
@@ -190,7 +190,6 @@ floor2_(win), floor_(win), shrub_(win)
 	FILL(4, 1, 33, 11, WALL);
 	FILL(11, 1, 40, 11, WALL);
 }
-
 void Map::draw()
 {
 	for (int i = 0; i < map_.size(); i++)
