@@ -19,15 +19,10 @@ public:
 		FLOOR1, // Gray version
 		FLOOR2, // Wood version
 		FLOOR3, // Stone version
-		BATH,
 		SHRUB, // кустарник
-		TABLE,
-		BED,
-		ANGLE_BED,
-		CHAIR,
-		ARM_CHAIR,
-		SINK,
-		TOILET
+		SHRUB2, // кустарник
+		WALL_VERT,
+		RAKOVINA
 
 	};
 	using matrix = std::array<std::array<Textures, M>, N>;
@@ -36,6 +31,11 @@ public:
 	Map(sf::RenderWindow& win);
 
 	void draw();
+	void move(float dx, float dy);
+
+	void setScale(float x);
+
+	float getScale() const;
 
 private:
 	matrix map_;
@@ -46,4 +46,9 @@ private:
 	BackSprite floor_;
 	BackSprite wall_;
 	BackSprite shrub_;
+	BackSprite wall_vert_;
+	BackSprite rakovina_;
+
+	vec2f pos_;
+	float scale_;
 };

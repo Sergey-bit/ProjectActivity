@@ -7,7 +7,7 @@
 #include <Widget.hpp>
 #include <ctime>
 
-class Chest: Core::GameObject, Frame
+class Chest: public Core::GameObject
 {
 public:
 
@@ -16,6 +16,7 @@ public:
 
 	void draw();
 	void work();
+	std::string toStrData() const;
 
 private:
 
@@ -28,7 +29,7 @@ private:
 	float globalskale = sf::VideoMode::getDesktopMode().width / 1920.0;
 
 	std::vector<equip> items;
-	std::vector<BackSprite> chestSlots;
+	std::vector<BackSprite*> chestSlots;
 
 	BackSprite chestIcon;
 	BackSprite chestEmptySlot;
