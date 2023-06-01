@@ -3,17 +3,17 @@
 #include <Object.hpp>
 #include <Profile.hpp>
 #include <Vector.hpp>
+#include <BaseDataPlayer.hpp>
 #include <cmath>
 
 #define PI 3.141592653589793238462643383279502884197
 
-class Player : virtual public Core::GameObject
+class Player : virtual public Core::GameObject, virtual public BasePlayerData
 {
 private:
-	vec2f pos_, lookdir, lookdirnorm, size;
-	Profile& profile_;
+	vec2f lookdir, lookdirnorm, size;
 
-	float angle_ = 0.f, speed = 5.0f;
+	float speed = 5.0f;
 	int ammoSize;
 	sf::RenderWindow& win_;
 	sf::RectangleShape player;
@@ -28,12 +28,10 @@ private:
 	std::vector<Bullet> ammo;
 
 public:
-	Player(sf::RenderWindow& win, Profile& profile);
+	Player(sf::RenderWindow& win);
 
 
-	void lookAt(const float& angle);
-	const float& getAngle() const;
-
+	void lookAt(const double& angle);
 	void move();
 	void lookingAround();
 	void tracking();

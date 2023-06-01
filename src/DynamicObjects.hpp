@@ -8,7 +8,6 @@
 
 struct DynamicObjects
 {
-	std::vector<BasePlayerData> players;
 	std::vector<Bullet> bullets;
 	std::vector<Chest> chests;
 

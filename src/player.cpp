@@ -1,31 +1,31 @@
 #include <player.hpp>
 
-Player::Player(sf::RenderWindow& win, Profile& profile) : win_(win), profile_(profile), line(sf::Lines, 2), size(win.getSize())
+Player::Player(sf::RenderWindow& win) : win_(win), line(sf::Lines, 2), size(win.getSize())
 {
-	pos_.x = win_.getSize().x / 2;
-	pos_.y = win_.getSize().y / 2;
+	pos.x = win_.getSize().x / 2;
+	pos.y = win_.getSize().y / 2;
 	player.setFillColor(sf::Color::Magenta);
 	player.setSize({50, 30});
-	player.setPosition(pos_);
+	player.setPosition(pos);
 }
 
-void Player::lookAt(const float& angle)
+void Player::lookAt(const double& angle)
 {
-	angle_ = angle;
+	this->angle = angle;
 }
 
 void Player::lookingAround()
 {
-	lookdir = exchangeIF(sf::Mouse::getPosition()) - pos_;
-	angle_ = atan2(lookdir.y, lookdir.x) * (180 / PI) - 90.0f;
-	player.setRotation(angle_);
+	lookdir = exchangeIF(sf::Mouse::getPosition()) - pos;
+	angle = atan2(lookdir.y, lookdir.x) * (180 / PI) - 90.0f;
+	player.setRotation(angle);
 }
 
 void Player::tracking()
 {
 	float angle = atan2(lookdir.y, lookdir.x);
-	line[0].position = pos_;
-	line[1].position = { pos_.x + size.x * cos(angle), pos_.y + size.x * sin(angle) };
+	line[0].position = pos;
+	line[1].position = { pos.x + size.x * cos(angle), pos.y + size.x * sin(angle) };
 }
 
 void Player::setAmmo(int ammo)
@@ -35,23 +35,23 @@ void Player::setAmmo(int ammo)
 
 void Player::move()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ((pos_.y - speed) > 0))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ((pos.y - speed) > 0))
 	{
-		pos_.y -= speed;
+		pos.y -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos_.y + speed) < size.y))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos.y + speed) < size.y))
 	{
-		pos_.y += speed;
+		pos.y += speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ((pos_.x - speed) > 0))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ((pos.x - speed) > 0))
 	{
-		pos_.x -= speed;
+		pos.x -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos_.x + speed) < size.x))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos.x + speed) < size.x))
 	{
-		pos_.x += speed;
+		pos.x += speed;
 	}
-	player.setPosition(pos_);
+	player.setPosition(pos);
 }
 
 void Player::fire()
@@ -71,20 +71,15 @@ void Player::shooting()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		lookdirnorm = lookdir / sqrt(lookdir.x * lookdir.x + lookdir.y * lookdir.y);
+		lookdirnorm = lookdir / (float)length(lookdir);
 		Bullet bullet;
 		bullet.object.setRadius(6);
-		bullet.pos_ = { pos_.x, pos_.y + 10 };
+		bullet.pos_ = { pos.x, pos.y + 10 };
 		bullet.object.setPosition(bullet.pos_);
 		bullet.currVelocity = lookdirnorm * bullet.velocity;
 		ammo.push_back(bullet);
 		fire();
 	}
-}
-
-const float& Player::getAngle() const
-{
-	return angle_;
 }
 
 void Player::draw()
