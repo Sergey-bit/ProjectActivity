@@ -1,6 +1,6 @@
 #include <player.hpp>
 
-Player::Player(sf::RenderWindow& win) : win_(win), line(sf::Lines, 2), size(win.getSize())
+Player::Player(sf::RenderWindow& win) : win_(win), windowSize(win.getSize())
 {
 	pos.x = win_.getSize().x / 2;
 	pos.y = win_.getSize().y / 2;
@@ -16,16 +16,10 @@ void Player::lookAt(const double& angle)
 
 void Player::lookingAround()
 {
-	lookdir = exchangeIF(sf::Mouse::getPosition()) - pos;
-	angle = atan2(lookdir.y, lookdir.x) * (180 / PI) - 90.0f;
-	player.setRotation(angle);
-}
-
-void Player::tracking()
-{
-	float angle = atan2(lookdir.y, lookdir.x);
-	line[0].position = pos;
-	line[1].position = { pos.x + size.x * cos(angle), pos.y + size.x * sin(angle) };
+	
+	vec2f lookdir = exchangeIF(sf::Mouse::getPosition()) - pos;
+	angle = atan2(lookdir.y, lookdir.x);
+	player.setRotation(angle * (180 / PI) - 90.0f);
 }
 
 void Player::setAmmo(int ammo)
@@ -39,7 +33,7 @@ void Player::move()
 	{
 		pos.y -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos.y + speed) < size.y))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos.y + speed) < windowSize.y))
 	{
 		pos.y += speed;
 	}
@@ -47,7 +41,7 @@ void Player::move()
 	{
 		pos.x -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos.x + speed) < size.x))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos.x + speed) < windowSize.x))
 	{
 		pos.x += speed;
 	}
@@ -58,11 +52,18 @@ void Player::fire()
 {
 	for (int i = 0; i < ammo.size(); i++)
 	{
-		ammo[i].object.move(ammo[i].currVelocity);
+		float velocity = 0;
+		if (ammo[0].type == 0)
+			velocity = 200.0f;
+		if (ammo[0].type == 1)
+			velocity = 150.0f;
+		if (ammo[0].type == 3)
+			velocity = 100.0f;
+		vec2f currVelocity = { cos(ammo[i].angle) * velocity, sin(ammo[i].angle) * velocity };
+		ammo[i].object.move(currVelocity);
 		win_.draw(ammo[i].object);
-
-		if (ammo[i].object.getPosition().x < 0 || ammo[i].object.getPosition().x > size.x
-			|| ammo[i].object.getPosition().y < 0 || ammo[i].object.getPosition().y > size.y)
+		if (ammo[i].object.getPosition().x < 0 || ammo[i].object.getPosition().x > windowSize.x
+			|| ammo[i].object.getPosition().y < 0 || ammo[i].object.getPosition().y > windowSize.y)
 			ammo.erase(ammo.begin() + i);
 	}
 }
@@ -71,12 +72,17 @@ void Player::shooting()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		lookdirnorm = lookdir / (float)length(lookdir);
 		Bullet bullet;
 		bullet.object.setRadius(6);
-		bullet.pos_ = { pos.x, pos.y + 10 };
-		bullet.object.setPosition(bullet.pos_);
-		bullet.currVelocity = lookdirnorm * bullet.velocity;
+		bullet.pos = { pos.x, pos.y + 10 };
+		bullet.object.setPosition(bullet.pos);
+		bullet.angle = angle;
+		if (weapon == Core::SHOTGUN)
+			bullet.type = Core::shotgun;
+		if (weapon == Core::RIFLE)
+			bullet.type = Core::rifle;
+		if (weapon == Core::UZI)
+			bullet.type = Core::pistol;
 		ammo.push_back(bullet);
 		fire();
 	}
@@ -85,5 +91,4 @@ void Player::shooting()
 void Player::draw()
 {
 	win_.draw(player);
-	win_.draw(line);
 }

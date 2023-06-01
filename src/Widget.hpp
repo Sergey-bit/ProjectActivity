@@ -20,6 +20,11 @@ namespace Core
 		UZI,
 		RIFLE,
 	};
+	enum BulletType {
+		pistol,
+		rifle,
+		shotgun
+	};
 	class GameObject;
 
 	class Settings final

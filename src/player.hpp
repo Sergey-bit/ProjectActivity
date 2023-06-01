@@ -2,8 +2,8 @@
 
 #include <Object.hpp>
 #include <Profile.hpp>
-#include <Vector.hpp>
 #include <BaseDataPlayer.hpp>
+#include <Bullet.hpp>
 #include <cmath>
 
 #define PI 3.141592653589793238462643383279502884197
@@ -11,20 +11,13 @@
 class Player : virtual public Core::GameObject, virtual public BasePlayerData
 {
 private:
-	vec2f lookdir, lookdirnorm, size;
+	vec2f windowSize;
 
 	float speed = 5.0f;
 	int ammoSize;
+	Core::Eqiupment weapon;
 	sf::RenderWindow& win_;
 	sf::RectangleShape player;
-	sf::VertexArray line;
-
-	struct Bullet
-	{
-		vec2f pos_, currVelocity;
-		float velocity = 60;
-		sf::CircleShape object;
-	};
 	std::vector<Bullet> ammo;
 
 public:
@@ -38,7 +31,6 @@ public:
 	void setAmmo(int ammo);
 	void fire();
 	void shooting();
-	void collide();
 
 	virtual void draw();
 };
