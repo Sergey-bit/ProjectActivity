@@ -3,10 +3,11 @@
 #include <Frame.hpp>
 #include <Sprite.hpp>
 #include <BackSprite.hpp>
-#include <Widget.hpp>
+#include <BaseChestData.h>
 #include <ctime>
+#include <map.hpp>
 
-class Chest: public Core::GameObject
+class Chest:public BaseChestData, public Core::GameObject
 {
 public:
 
@@ -14,7 +15,7 @@ public:
 	Core::Eqiupment getItem();
 
 	void draw();
-	void work();
+	void work(Map& map);
 	std::string toStrData() const;
 	float id;
 
@@ -28,10 +29,10 @@ private:
 	sf::RenderWindow& Window;
 	using equip = Core::Eqiupment;
 
-	vec2i position;
 	size_t maxItems = 5;
 	size_t curItems;
 	float globalskale = sf::VideoMode::getDesktopMode().width / 1920.0;
+
 	float scale;
 
 	std::vector<equip> items;

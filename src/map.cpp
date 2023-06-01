@@ -32,6 +32,10 @@ void Map::setScale(float x) {
 float Map::getScale() const{
 	return scale_;
 }
+std::array<Map::Textures, M>& Map::operator[](size_t i)
+{
+	return map_[i];
+}
 
 Map::Map(sf::RenderWindow& win) : win_(win), floor3_(win), wall_(win), 
 floor2_(win), floor_(win), shrub_(win), wall_vert_(win), rakovina_(win)
@@ -271,6 +275,7 @@ floor2_(win), floor_(win), shrub_(win), wall_vert_(win), rakovina_(win)
 	FILL(7, 1, 37, 38, WALL);
 	FILL(7, 10, 37, 28, FLOOR1);
 	FILL(1, 3, 36, 32, FLOOR1);
+
 	map_[38][10] = SHRUB;
 	map_[35][10] = SHRUB;
 	map_[41][18] = SHRUB;
@@ -287,7 +292,7 @@ void Map::draw()
 	{
 		for (int j = 0; j < map_[i].size(); j++)
 		{
-			vec2i pos((int)(i - pos_.x) * 100 * scale_, (int)(j - pos_.y) * 100 * scale_);
+			vec2i pos((int)((i - pos_.x) * 100 * scale_), (int)((j - pos_.y) * 100 * scale_));
 			switch (map_[i][j])
 			{
 			case FLOOR3:
@@ -323,4 +328,9 @@ void Map::draw()
 			}
 		}
 	}
+}
+
+vec2f Map::getPos() const
+{
+	return pos_;
 }

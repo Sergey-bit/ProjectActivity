@@ -1,62 +1,84 @@
 #pragma once
 
+#include <SFML/Network.hpp>
+#include <vector>
 #include <iostream>
-#include <boost/asio.hpp>
-#include <boost/system.hpp>
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/core/noncopyable.hpp>
-#include <socketapi.h>
 
-#define MEM_FN(x) boost::bind(&self_type::x, shared_from_this())
-#define MEM_FN1(x,y) boost::bind(&self_type::x, shared_from_this(),y)
-#define MEM_FN2(x,y,z) boost::bind(&self_type::x, shared_from_this(),y,z)
+using Status = sf::Socket::Status;
 
-using namespace boost::asio;
-extern io_service service;
-
-
-class TalkToSvr : public boost::enable_shared_from_this<TalkToSvr>,
-	private boost::noncopyable
+/*Object for managing connection to the server that handles connection using NetworkServer*/
+class NetworkClient
 {
-private:
-    typedef TalkToSvr self_type;
+	sf::UdpSocket dataSocket;
+	sf::TcpSocket regSocket;
 
-    TalkToSvr(const std::string& message);
-    void start(ip::tcp::endpoint ep);
+	sf::Packet sendPacket;
+
+	sf::Clock sendRateTimer;
+	sf::Int16 sendRate = 2;
+
+	sf::IpAddress S_Ip;
+	unsigned short S_regPort;
 
 public:
-    typedef boost::system::error_code error_code;
-    typedef boost::shared_ptr<TalkToSvr> ptr;
+	unsigned short S_dataPort;
+	NetworkClient();
 
-    static ptr start(ip::tcp::endpoint ep, const std::string& message);
+	/////// Execute these ones ///////
 
-    void stop();
-    bool started();
+	/*Tries to bind udp data socket to passed port, if failed - endlessly tries to bind any other port
+	Return Status::Done if binded to any port*/
+	Status init(unsigned short preferablePort = sf::Socket::AnyPort);
 
-    static const std::string& getAnswer();
+	/*Setups connection to the server, retrieves and sends needed data to exchange data*/
+	Status registerOnServer(sf::IpAddress serverIp, unsigned short serverRegPort, std::string clientName);
 
+	/*Receives and records connected clients names to passed vector*/
+	Status receiveConnectedClientsNames(std::vector<std::string>& namesVec);
+
+	/////// Execute these in main loop ///////
+
+	/// <summary>
+	/// Receives data sent by server's udp socket dedicated for connection with this client.
+	/// Receive is NON-blocking.
+	/// When Status::Done returned, you can extract dataPacket.
+	/// Packet dataPacket must exist as long ass this method being called
+	/// </summary>
+	/// <param name="dataPacket"> packet to fill with received data</param>
+	/// <param name="S_Ip"> Server Ip address</param>
+	/// <param name="S_dataPort"> Server data port for connection with this client</param>
+	/// <returns>status code</returns>
+	Status receiveData(sf::Packet& dataPacket, sf::IpAddress S_Ip, unsigned short S_dataPort);
+
+
+	/// <summary>
+	/// Sends copy of passed packet to server's udp socket dedicated for connection with this client.
+	/// Sending is NON-blocking.
+	/// Use this method to send player location, rotation, events - by using event codes - numbers or strings
+	/// To change default frequency see setSendFreq();
+	/// If Status::Done returned, packet was sent.
+	/// </summary>
+	/// <param name="dataPacket">Packet to sent</param>
+	/// <returns>status code</returns>
+	Status sendData(sf::Packet dataPacket);
+
+
+	/// <summary>
+	/// Set sentData() send frequency 
+	/// </summary>
+	/// <param name="milliseconds">idle time between send calls in milliseconds</param>
+	void setSendFreq(sf::Int32 milliseconds);
 private:
-    void on_connect(const error_code& err);
-    void on_read(const error_code& err, size_t bytes);
+	/*Connects registration tcp socket to server registration tcp socket*/
+	Status connectRegTcpSocket(sf::IpAddress serverIp, unsigned short serverRegPort);
 
-    void on_write(const error_code& err, size_t bytes);
-    void do_read();
+	/*Sets registration tcp socket to be blocking, then sends using it data udp socket port and network client name to
+	registration socket of a server, so that server create new dedicated client record*/
+	Status sendClientRecipientData(std::string clientName);
 
-    void do_write(const std::string& msg);
-    size_t read_complete(const boost::system::error_code& err, size_t bytes);
+	/*NetworkServer creates new udp socket with its own separate port for each client to communicate with that client after registration,
+	receive port dedicated to this client using this method*/
+	Status recieveDedicatedDataServerPort();
 
 
-private:
-    enum { max_msg = 1024 };
-    bool started_;
-
-    ip::tcp::socket sock_;
-    static std::string message_;
-    static bool gotten_;
-
-    char read_buffer_[max_msg];
-    char write_buffer_[max_msg];
 };

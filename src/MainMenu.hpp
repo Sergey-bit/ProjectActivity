@@ -7,6 +7,7 @@
 #include <Widget.hpp>
 #include <SFML/System.hpp>
 #include <functional>
+#include <World.hpp>
 
 class MainMenu: public Frame {
 private:
@@ -14,6 +15,7 @@ private:
     float skalebutton = 0.75;
 
     sf::RenderWindow& Window;
+    World wrld;
 
     Button start;
     Button multiplayer;
@@ -29,6 +31,8 @@ private:
     bool isSettingsPressed = false;
     bool isStatisticsPressed = false;
     bool isAchivmentsPressed = false;
+
+    bool transit = false;
 
 public:
     MainMenu(sf::RenderWindow& Window);

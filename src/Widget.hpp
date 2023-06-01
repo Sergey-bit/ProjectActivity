@@ -21,6 +21,11 @@ namespace Core
 		RIFLE,
 		VOID,
 	};
+	enum BulletType {
+		pistol,
+		rifle,
+		shotgun
+	};
 	class GameObject;
 
 	class Settings final

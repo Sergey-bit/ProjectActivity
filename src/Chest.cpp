@@ -4,11 +4,9 @@ Chest::Chest(sf::RenderWindow& Window, const vec2i& pos) :
 	Window(Window),
 	chestIcon(Window)
 {
+	position = pos;
 	chestIcon.load(TEX_PATH "chest\\chest.png");
-	chestIcon.setScale(vec2f(globalskale, globalskale));
-
-	position = 100 * pos;
-	chestIcon.setPosition(position);
+	//chestIcon.setScale(vec2f(globalskale, globalskale ));
 
 	for (int i = 0; i < maxItems; i++) {
 		chestSlots.push_back(new BackSprite(Window));
@@ -18,22 +16,25 @@ Chest::Chest(sf::RenderWindow& Window, const vec2i& pos) :
 	loadSlots();
 }
 
-void Chest::work() {
+void Chest::work(Map& map) {
+	const auto& pos3 = sf::VideoMode::getDesktopMode();
+	vec2f pos2 = (exchangeIF<int>(position) - map.getPos()) * 100.0f * map.getScale();
+	chestIcon.setScale(map.getScale());
+	if (pos3.width >= pos2.x >= 0 && pos3.height >= pos2.y >= 0)
+	{
+		chestIcon.setPosition({ (int)pos2.x, (int)pos2.y });
+		draw();
+	}
 
-	draw();
-	
-	
+	sf::Vector2i pos(mouse.getPosition());
 
-		sf::Vector2i pos(mouse.getPosition());
-
-		if (isPressed(chestIcon, pos) && flagP == false) {
-
-			flagE = !flagE;
-			flagP = true;
-		}
-		else if (flagP && !isPressed(chestIcon, pos)) {
-			flagP = false;
-		}
+	if (isPressed(chestIcon, pos) && flagP == false) {
+		flagE = !flagE;
+		flagP = true;
+	}
+	else if (flagP && !isPressed(chestIcon, pos)) {
+		flagP = false;
+	}
 
 
 	if (flagE) {

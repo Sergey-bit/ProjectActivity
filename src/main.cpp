@@ -13,6 +13,7 @@
 #include <Chest.hpp>
 #include <Inventory.hpp>
 #include <ctime>
+#include <World.hpp>
 
 #define SPEED 0.5
 #define SCALE_SPEED 0.05
@@ -37,9 +38,6 @@
 //	loop.addTransfer({ statisIndex, statis.escPressed(), menuIndex });
 //	loop.addTransfer({ achivIndex, achiv.exit(), menuIndex});
 //	loop.addTransfer({ regisIndex, regis.autorized(), menuIndex});
-//
-//	
-//
 //		
 //	loop.work();
 //	return EXIT_SUCCESS;
@@ -57,6 +55,10 @@ int main() {
 
 	Inventory inventar(window);
 	
+
+	Player player(window);
+	Chest chest3(window,{10,3});
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -70,8 +72,8 @@ int main() {
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
 				map.setScale(map.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
-				chest.setScale(chest.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
-				chest2.setScale(chest2.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
+				//chest.setScale(chest.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
+				//chest2.setScale(chest2.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
 			}
 			if (event.type == sf::Event::KeyPressed)
 			{
@@ -103,8 +105,10 @@ int main() {
 		window.clear();
 		map.draw();	
 
-		chest.work();
-		chest2.work();
+		chest.work(map);
+		chest2.work(map);
+		chest3.work(map);
+
 		inventar.work();
 
 		inventar.setItem(chest.getItem());
@@ -112,6 +116,9 @@ int main() {
 
 		inventar.getItem();
 
+		player.draw();
+		player.lookingAround();
+		player.move(map);
 		window.display();
 	}
 

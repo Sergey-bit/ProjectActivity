@@ -1,108 +1,152 @@
-#include <Connection/client.hpp>
+#include "Client.hpp"
 
-
-extern io_service service{};
-
-std::string TalkToSvr::message_;
-bool TalkToSvr::gotten_ = false;
-
-TalkToSvr::TalkToSvr(const std::string& message) : sock_(service), started_(true)
+NetworkClient::NetworkClient()
 {
-    message_ = message;
-}
-TalkToSvr::ptr TalkToSvr::start(ip::tcp::endpoint ep, const std::string& message)
-{
-    ptr new_(new TalkToSvr(message));
-    new_->start(ep);
-
-    return new_;
 }
 
-void TalkToSvr::start(ip::tcp::endpoint ep)
+Status NetworkClient::init(unsigned short preferablePort)
 {
-    sock_.async_connect(ep, MEM_FN1(on_connect, _1));
+	Status status = dataSocket.bind(preferablePort);
+
+	if (status == Status::Done)
+	{
+		std::cout << "init(): Successfully binded to port: " << dataSocket.getLocalPort() << std::endl;
+		return Status::Done;
+	}
+	else
+	{
+		std::cout << "(!)init(): Failed to bind passed preferred port\n";
+		do
+		{
+			unsigned short newPort = sf::Socket::AnyPort;
+			std::cout << "init(): Trying to bind other port - " << newPort << std::endl;
+			status = dataSocket.bind(newPort);
+			if (status != Status::Done)
+				std::cout << "(!)init(): Failed to bind other port. Retrying...\n";
+
+		} while (status != Status::Done);
+
+		std::cout << "init(): Successfully binded to other port - " << dataSocket.getLocalPort() << std::endl;
+		return Status::Done;
+	}
 }
-void TalkToSvr::stop()
+Status NetworkClient::registerOnServer(sf::IpAddress serverIp, unsigned short serverRegPort, std::string clientName)
 {
-    if (!started_) return;
-    started_ = false;
-    sock_.close();
+	if (connectRegTcpSocket(serverIp, serverRegPort) != Status::Done)
+		return Status::Error;
+
+	if (sendClientRecipientData(clientName) != Status::Done)
+		return Status::Error;
+
+	if (recieveDedicatedDataServerPort() != Status::Done)
+		return Status::Error;
+
 }
 
-bool TalkToSvr::started()
+Status NetworkClient::receiveData(sf::Packet& dataPacket, sf::IpAddress S_Ip, unsigned short S_dataPort)
 {
-    return started_;
+	if (dataSocket.isBlocking())dataSocket.setBlocking(false);
+	Status s = dataSocket.receive(dataPacket, S_Ip, S_dataPort);
+	if (s == Status::Done)
+	{
+		std::cout << "ekjnv" << "\n";
+		if (dataPacket.getDataSize() > 0)
+		{
+			//cout << "receiveData(): Data received\n";
+			return Status::Done;
+		}
+		else
+		{
+			std::cout << "(!)receiveData(): Received packet is empty\n";
+			return Status::Error;
+		}
+	}
+	return Status::NotReady;
+}
+Status NetworkClient::sendData(sf::Packet dataPacket)
+{
+	if (sendRateTimer.getElapsedTime().asMilliseconds() > sendRate)
+	{
+		if (dataSocket.isBlocking())dataSocket.setBlocking(false);
+
+		if (sendPacket.getDataSize() == 0) sendPacket = dataPacket;
+
+		sf::IpAddress tempIp = S_Ip;
+		unsigned short tempDataPort = S_dataPort;
+		if (dataSocket.send(sendPacket, tempIp, tempDataPort) == Status::Done)
+		{
+			sendPacket.clear();
+			sendRateTimer.restart();
+			return Status::Done;
+		}
+		else return Status::NotReady;
+	}
+	else return Status::NotReady;
 }
 
-void TalkToSvr::on_connect(const error_code& err)
+void NetworkClient::setSendFreq(sf::Int32 milliseconds)
 {
-    if (!err)
-    {
-        do_write(message_ + "\n");
-    }
-    else    
-    {
-        stop();
-    }
+	sendRate = milliseconds;
 }
-void TalkToSvr::on_read(const error_code& err, size_t bytes)
+Status NetworkClient::connectRegTcpSocket(sf::IpAddress serverIp, unsigned short serverRegPort)
 {
-    if (!err) {
-        std::string copy(read_buffer_, bytes - 1);
-        message_ = copy;
+	if (!regSocket.isBlocking()) regSocket.setBlocking(true);
 
-        gotten_ = true;
-    }
-    else
-    {
-        std::cout << err.value() << std::endl;
-    }
-    stop();
+	if (regSocket.connect(serverIp, serverRegPort, sf::seconds(10)) == Status::Done)
+	{
+		std::cout << "connectRegTcpSocket(): Connected to server\n";
+		S_Ip = serverIp;
+		S_dataPort = serverRegPort;
+		return Status::Done;
+	}
+	else
+	{
+		std::cout << "(!)connectRegTcpSocket(): Error connecting to server!\n";
+		return Status::Error;
+	}
 }
 
-void TalkToSvr::on_write(const error_code& err, size_t bytes)
+Status NetworkClient::sendClientRecipientData(std::string clientName)
 {
-    do_read();
-}
-void TalkToSvr::do_read()
-{
-    async_read(sock_, buffer(read_buffer_),
-        MEM_FN2(read_complete, _1, _2), MEM_FN2(on_read, _1, _2));
-}
+	if (!regSocket.isBlocking()) regSocket.setBlocking(true);
 
-void TalkToSvr::do_write(const std::string& msg)
-{
-    if (!started()) 
-    {
-        return;
-    }
-    std::copy(msg.begin(), msg.end(), write_buffer_);
-
-    sock_.async_write_some(
-        buffer(write_buffer_, msg.size()),
-        MEM_FN2(on_write, _1, _2)
-    );
+	sf::Packet tempPacket;
+	tempPacket << clientName << static_cast<sf::Uint16>(dataSocket.getLocalPort());
+	if (regSocket.send(tempPacket) == Status::Done)
+	{
+		std::cout << "sendClientRecipientData(): Successfully sent client recipient data\n";
+		return Status::Done;
+	}
+	else
+	{
+		std::cout << "(!)sendClientRecipientData(): Failed to send client recipient data\n";
+		return Status::Error;
+	}
 }
-size_t TalkToSvr::read_complete(const boost::system::error_code& err, size_t bytes)
+Status NetworkClient::recieveDedicatedDataServerPort()
 {
-    if (err)
-    {
-        return 0;
-    }
-    bool found = std::find(read_buffer_, read_buffer_ + bytes, '\n') < read_buffer_ + bytes;
+	if (!regSocket.isBlocking()) regSocket.setBlocking(true);
 
-    // we read one-by-one until we get to enter, no buffering
-    return found ? 0 : 1;
-}
+	sf::Packet tempPacket;
 
-const std::string& TalkToSvr::getAnswer()
-{
-    if (gotten_)
-    {
-        return message_;
-    }
-    else
-    {
-        return "";
-    }
+	if (regSocket.receive(tempPacket) == Status::Done)
+	{
+		if (tempPacket.getDataSize() > 0)
+		{
+			if (tempPacket.getDataSize() == sizeof(sf::Uint16))
+			{
+				if (tempPacket >> S_dataPort)
+				{
+					std::cout << "recieveDedicatedDataServerPort(): Successfully received data client-dedicated port of a server - " << S_dataPort << std::endl;
+					return Status::Done;
+				}
+				else std::cout << "(!)recieveDedicatedDataServerPort(): Failed to read from received packet\n";
+			}
+			else std::cout << "(!)recieveDedicatedDataServerPort(): Invalid packet size, ensure that server sends only Uint16 var\n";
+		}
+		else std::cout << "(!)recieveDedicatedDataServerPort(): Received packet is empty\n";
+	}
+	else std::cout << "(!)recieveDedicatedDataServerPort(): Failed to receive client-dedicated port of a server\n";
+
+	return Status::Error;
 }

@@ -1,4 +1,4 @@
-#pragma 
+#pragma once
 
 #include <Vector.hpp>
 #include <Widget.hpp>

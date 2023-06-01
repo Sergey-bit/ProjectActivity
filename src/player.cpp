@@ -1,68 +1,73 @@
 #include <player.hpp>
 
-Player::Player(sf::RenderWindow& win, Profile& profile) : win_(win), profile_(profile), line(sf::Lines, 2), size(win.getSize())
+Player::Player(sf::RenderWindow& win) : win_(win), windowSize(win.getSize()), player(win)
 {
-	pos_.x = win_.getSize().x / 2;
-	pos_.y = win_.getSize().y / 2;
-	player.setFillColor(sf::Color::Magenta);
-	player.setSize({50, 30});
-	player.setPosition(pos_);
+	player.load(TEX_PATH "player/player.png");
+	spriteOrigin = { player.getSize().x / 2.0f ,player.getSize().y / 2.0f };
+	pos = {windowSize.x / 2 , windowSize.y / 2 };
+	player.setPosition(exchangeIF(pos));
+	player.setScale(0.4);
+	posToMap = { floor(pos.x / 100), floor(pos.y / 100) };
 }
 
-void Player::lookAt(const float& angle)
+void Player::lookAt(const double& angle)
 {
-	angle_ = angle;
+	this->angle = angle;
 }
 
 void Player::lookingAround()
 {
-	lookdir = exchangeIF(sf::Mouse::getPosition()) - pos_;
-	angle_ = atan2(lookdir.y, lookdir.x) * (180 / PI) - 90.0f;
-	player.setRotation(angle_);
+	
+	vec2f lookdir = exchangeIF(sf::Mouse::getPosition()) - pos;
+	angle = atan2(lookdir.y, lookdir.x);
+	player.setRotation(spriteOrigin, (angle * (180 / PI) + 90.0f));
 }
 
-void Player::tracking()
-{
-	float angle = atan2(lookdir.y, lookdir.x);
-	line[0].position = pos_;
-	line[1].position = { pos_.x + size.x * cos(angle), pos_.y + size.x * sin(angle) };
-}
-
-void Player::setAmmo(int ammo)
+void Player::setAmmo(const int& ammo)
 {
 	ammoSize = ammo;
 }
 
-void Player::move()
+void Player::move(Map& map)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ((pos_.y - speed) > 0))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && 7 > map[round(posToMap.x)][floor(posToMap.y - speed)] && map[round(posToMap.x)][floor(posToMap.y - speed)] > 1)
 	{
-		pos_.y -= speed;
+		map.move(0.0, -speed);
+		posToMap.y -=speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos_.y + speed) < size.y))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && 7 > map[round(posToMap.x)][ceil(posToMap.y + speed)] && map[round(posToMap.x)][ceil(posToMap.y + speed)] > 1)
 	{
-		pos_.y += speed;
+		map.move(0.0, speed);
+		posToMap.y += speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ((pos_.x - speed) > 0))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 7 > map[floor(posToMap.x - speed)][round(posToMap.y)] && map[floor(posToMap.x - speed)][round(posToMap.y)] > 1)
 	{
-		pos_.x -= speed;
+		map.move(-speed, 0.0);
+		posToMap.x -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos_.x + speed) < size.x))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && 7 > map[ceil(posToMap.x + speed)][round(posToMap.y)] && map[ceil(posToMap.x + speed)][round(posToMap.y)] > 1)
 	{
-		pos_.x += speed;
+		map.move(speed, 0.0);
+		posToMap.x += speed;
 	}
-	player.setPosition(pos_);
 }
 
 void Player::fire()
 {
 	for (int i = 0; i < ammo.size(); i++)
 	{
-		ammo[i].object.move(ammo[i].currVelocity);
+		float velocity = 0;
+		if (ammo[0].type == 0)
+			velocity = 200.0f;
+		if (ammo[0].type == 1)
+			velocity = 150.0f;
+		if (ammo[0].type == 3)
+			velocity = 100.0f;
+		vec2f currVelocity = { cos(ammo[i].angle) * velocity, sin(ammo[i].angle) * velocity };
+		ammo[i].object.move(currVelocity);
 		win_.draw(ammo[i].object);
-
-		if (ammo[i].object.getPosition().x < 0 || ammo[i].object.getPosition().x > size.x
-			|| ammo[i].object.getPosition().y < 0 || ammo[i].object.getPosition().y > size.y)
+		if (ammo[i].object.getPosition().x < 0 || ammo[i].object.getPosition().x > windowSize.x
+			|| ammo[i].object.getPosition().y < 0 || ammo[i].object.getPosition().y > windowSize.y)
 			ammo.erase(ammo.begin() + i);
 	}
 }
@@ -71,24 +76,33 @@ void Player::shooting()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		lookdirnorm = lookdir / sqrt(lookdir.x * lookdir.x + lookdir.y * lookdir.y);
 		Bullet bullet;
 		bullet.object.setRadius(6);
-		bullet.pos_ = { pos_.x, pos_.y + 10 };
-		bullet.object.setPosition(bullet.pos_);
-		bullet.currVelocity = lookdirnorm * bullet.velocity;
+		bullet.pos = { pos.x, pos.y + 10 };
+		bullet.object.setPosition(bullet.pos);
+		bullet.angle = angle;
+		if (weapon == Core::SHOTGUN)
+			bullet.type = Core::shotgun;
+		if (weapon == Core::RIFLE)
+			bullet.type = Core::rifle;
+		if (weapon == Core::UZI)
+			bullet.type = Core::pistol;
 		ammo.push_back(bullet);
 		fire();
 	}
 }
 
-const float& Player::getAngle() const
+void Player::death()
 {
-	return angle_;
+	if (BasePlayerData::getHealth() <= 0)
+	{
+		player.setVisibility(false);
+		Chest chest(win_, { (int)round(posToMap.x * 100), (int)round(posToMap.y * 100) });
+		chest.draw();
+	}
 }
 
 void Player::draw()
 {
-	win_.draw(player);
-	win_.draw(line);
+	player.draw();
 }
