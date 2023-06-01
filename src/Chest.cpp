@@ -5,6 +5,7 @@ Chest::Chest(sf::RenderWindow& Window, const vec2i& pos) :
 	chestIcon(Window),
 	chestEmptySlot(Window)
 {
+	BaseChestData::setPos(pos);
 	chestIcon.load(TEX_PATH "chest\\chest.png");
 	chestIcon.setScale(vec2f(globalskale, globalskale));
 
@@ -96,9 +97,8 @@ void Chest::generateItems() {
 
 		size_t buff = rand() % 9;
 		items.push_back((equip)buff);
-
 	}
-	
+	BaseChestData::setItems(items);
 }
 
 bool Chest::isPressed(BackSprite& sprite, vec2i& pos2) {
@@ -116,6 +116,7 @@ Core::Eqiupment Chest::getItem() {
 		items.erase(items.begin() + gettedItem);
 		return items[gettedItem];
 	}
+	BaseChestData::setItems(items);
 }
 
 std::string Chest::toStrData() const {

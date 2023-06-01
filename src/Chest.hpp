@@ -4,10 +4,10 @@
 #include <Sprite.hpp>
 #include <Button\Button.hpp>
 #include <BackSprite.hpp>
-#include <Widget.hpp>
+#include <BaseChestData.h>
 #include <ctime>
 
-class Chest: public Core::GameObject
+class Chest:public BaseChestData, public Core::GameObject
 {
 public:
 
