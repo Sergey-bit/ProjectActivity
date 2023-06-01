@@ -11,6 +11,7 @@
 #include <Profile.hpp>
 #include <map.hpp>
 #include <Chest.hpp>
+#include <World.hpp>
 
 #define SPEED 0.5
 #define SCALE_SPEED 0.05

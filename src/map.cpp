@@ -32,6 +32,10 @@ void Map::setScale(float x) {
 float Map::getScale() const{
 	return scale_;
 }
+std::array<Map::Textures, M>& Map::operator[](size_t i)
+{
+	return map_[i];
+}
 
 Map::Map(sf::RenderWindow& win) : win_(win), floor3_(win), wall_(win), 
 floor2_(win), floor_(win), shrub_(win), wall_vert_(win), rakovina_(win)

@@ -22,7 +22,8 @@ public:
 		SHRUB, // кустарник
 		SHRUB2, // кустарник
 		WALL_VERT,
-		RAKOVINA
+		RAKOVINA,
+		CHEST
 
 	};
 	using matrix = std::array<std::array<Textures, M>, N>;
@@ -34,8 +35,9 @@ public:
 	void move(float dx, float dy);
 
 	void setScale(float x);
-
 	float getScale() const;
+
+	std::array<Textures, M>& operator[](size_t i);
 
 private:
 	matrix map_;
@@ -50,5 +52,5 @@ private:
 	BackSprite rakovina_;
 
 	vec2f pos_;
-	float scale_;
+	float scale_ = 1.0;
 };

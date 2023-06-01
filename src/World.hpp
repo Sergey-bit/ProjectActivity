@@ -7,15 +7,16 @@
 #include <Connection/Client.hpp>
 #include <DynamicObjects.hpp>
 #include <loadingwin.hpp>
+#include <Frame.hpp>
 
-class World
+class World final
 {
 private:
 	sf::RenderWindow& win_;
 	Map map_;
 	Player player;
 	DynamicObjects objects;
-	std::array<Player, 5> players;
+	std::array<Player, 1> players;
 	NetworkClient client;
 
 	sf::Packet sendDataPacket;
@@ -25,14 +26,19 @@ private:
 	sf::Uint16 serverPort;
 
 	bool started = true;
+	bool closed = false;
 
 public:
 	World(sf::RenderWindow& win);
 
+	virtual void work();
+	virtual void init();
+
 	void draw();
+	bool isClosed() const;
 	
-	bool collide(const vec2f& pos) const;
-	bool isChestNearby() const;
+	bool collide(const vec2f& pos);
+	bool isChestNearby();
 
 	vec2f worldCoord(const vec2i& pos) const;
 

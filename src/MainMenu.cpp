@@ -62,20 +62,35 @@ MainMenu::MainMenu(sf::RenderWindow& Window) :
     statistics(Window, 250 * globalskale, 474 * globalskale),
     achivments(Window, 250 * globalskale, 598 * globalskale),
     exit(Window, 965 * globalskale, 683 * globalskale),
-    shop(Window),
-    Window(Window),
-    back(Window)
+    shop(Window), wrld(Window),
+    Window(Window), back(Window)
 {
 }
 
 void MainMenu::work() {
-    draw(); 
-    isStartPressed = start.isPressed();
-    isMultiplayerPressed = multiplayer.isPressed();
-    isSettingsPressed = settings.isPressed();
-    isStatisticsPressed = statistics.isPressed();
-    isAchivmentsPressed = achivments.isPressed();
-    if(exit.isPressed()) Window.close();
+    if(!isStartPressed)
+    {
+        draw();
+        isStartPressed = start.isPressed();
+        isMultiplayerPressed = multiplayer.isPressed();
+        isSettingsPressed = settings.isPressed();
+        isStatisticsPressed = statistics.isPressed();
+        isAchivmentsPressed = achivments.isPressed();
+        if (exit.isPressed()) Window.close();
+    }
+    else
+    {
+        if (!transit)
+        {
+            wrld.init();
+            transit = true;
+        }
+        wrld.work();
+        if (wrld.isClosed())
+        {
+            isStartPressed = false;
+        }
+    }
 }
 void MainMenu::draw() {
     back.draw();
