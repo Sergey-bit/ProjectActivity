@@ -2,6 +2,7 @@
 
 #include <Vector.hpp>
 #include <Widget.hpp>
+#include <SFML/Graphics.hpp>
 
 struct Bullet
 {

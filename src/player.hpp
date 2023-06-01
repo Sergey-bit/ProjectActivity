@@ -4,6 +4,7 @@
 #include <Profile.hpp>
 #include <BaseDataPlayer.hpp>
 #include <Bullet.hpp>
+#include <map.hpp>
 #include <cmath>
 
 #define PI 3.141592653589793238462643383279502884197
@@ -27,7 +28,6 @@ public:
 	void lookAt(const double& angle);
 	void move();
 	void lookingAround();
-	void tracking();
 	void setAmmo(int ammo);
 	void fire();
 	void shooting();

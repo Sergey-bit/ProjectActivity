@@ -5,11 +5,13 @@
 #include <Bullet.hpp>
 #include <Chest.hpp>
 #include <BaseDataPlayer.hpp>
+#include <BaseChestData.h>
+#include <BaseDataPlayer.hpp>
 
 struct DynamicObjects
 {
 	std::vector<Bullet> bullets;
-	std::vector<Chest> chests;
+	std::vector<BaseChestData> chests;
 
 	std::string toStrData() const;
 };

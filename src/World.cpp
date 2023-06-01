@@ -3,7 +3,7 @@
 #include <World.hpp>
 
 World::World(sf::RenderWindow& win) : map_(win), player(win), win_(win),
-serverIp("localhost"), serverPort(51784),
+serverIp("localhost"), serverPort(57038),
 players{Player(win_)}
 {
 }
@@ -26,28 +26,28 @@ void World::waitingForGame()
 				if (s == "START")
 				{
 					started = false;
+					std::string name;
+					int x, y;
 
-					for (auto& p : players)
-					{
-	
-						std::string name;
-						int x, y;
-
-						receiveDataPacket >> name;
-						receiveDataPacket >> x;
-						receiveDataPacket >> y;
+					receiveDataPacket >> name;
+					receiveDataPacket >> x;
+					receiveDataPacket >> y;
 						
-						p.setName(name);
+					player.setName(name);
 
-						p.setX(x * 100);
-						p.setY(y * 100);
-						p.healthMoves(100.0);
+					player.setX(x * 100);
+					player.setY(y * 100);
+					player.healthMoves(100.0);
 
-						if (name == player.getName())
-						{
-							player.setX(p.x());
-							player.setY(p.y());
-						}
+					receiveDataPacket >> s;
+					int n;
+					receiveDataPacket >> n;
+					for (int i = 0; i < n; i++)
+					{
+						int x, y;
+						receiveDataPacket >> x >> y;
+						chests.push_back(new Chest(win_, vec2i(x * 100, y * 100)));
+						map_[(size_t)(x)][y] = Map::CHEST;
 					}
 				}
 			}
@@ -62,6 +62,7 @@ void World::draw()
 		p.draw();
 		p.lookingAround();
 		p.move();
+		collide({ p.x(), p.y() });
 	}
 }
 void World::work()

@@ -15,7 +15,7 @@ private:
 	sf::RenderWindow& win_;
 	Map map_;
 	Player player;
-	DynamicObjects objects;
+	std::vector<Chest*> chests;
 	std::array<Player, 1> players;
 	NetworkClient client;
 
