@@ -73,6 +73,12 @@ vec2u Sprite::getSize() const
 	return texture->getSize();
 }
 
+void Sprite::setRotation(vec2f origin, float angle)
+{
+	sprite.setOrigin(origin);
+	sprite.setRotation(angle);
+}
+
 //void Sprite::scale(const double& f)
 //{
 //	sprite.scale({ f, f });

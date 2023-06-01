@@ -292,7 +292,7 @@ void Map::draw()
 	{
 		for (int j = 0; j < map_[i].size(); j++)
 		{
-			vec2i pos((int)(i - pos_.x) * 100 * scale_, (int)(j - pos_.y) * 100 * scale_);
+			vec2i pos((int)((i - pos_.x) * 100 * scale_), (int)((j - pos_.y) * 100 * scale_));
 			switch (map_[i][j])
 			{
 			case FLOOR3:

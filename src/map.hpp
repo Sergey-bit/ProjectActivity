@@ -41,6 +41,7 @@ public:
 
 private:
 	matrix map_;
+	vec2f pos;
 	sf::RenderWindow& win_;
 
 	BackSprite floor3_;

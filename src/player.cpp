@@ -1,12 +1,13 @@
 #include <player.hpp>
 
-Player::Player(sf::RenderWindow& win) : win_(win), windowSize(win.getSize())
+Player::Player(sf::RenderWindow& win) : win_(win), windowSize(win.getSize()), player(win)
 {
-	pos.x = win_.getSize().x / 2;
-	pos.y = win_.getSize().y / 2;
-	player.setFillColor(sf::Color::Magenta);
-	player.setSize({50, 30});
-	player.setPosition(pos);
+	player.load(TEX_PATH "player/player.png");
+	spriteOrigin = { player.getSize().x / 2.0f ,player.getSize().y / 2.0f };
+	pos = {windowSize.x / 2 , windowSize.y / 2 };
+	player.setPosition(exchangeIF(pos));
+	player.setScale(0.4);
+	posToMap = { floor(pos.x / 100), floor(pos.y / 100) };
 }
 
 void Player::lookAt(const double& angle)
@@ -19,33 +20,36 @@ void Player::lookingAround()
 	
 	vec2f lookdir = exchangeIF(sf::Mouse::getPosition()) - pos;
 	angle = atan2(lookdir.y, lookdir.x);
-	player.setRotation(angle * (180 / PI) - 90.0f);
+	player.setRotation(spriteOrigin, (angle * (180 / PI) + 90.0f));
 }
 
-void Player::setAmmo(int ammo)
+void Player::setAmmo(const int& ammo)
 {
 	ammoSize = ammo;
 }
 
-void Player::move()
+void Player::move(Map& map)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ((pos.y - speed) > 0))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && 7 > map[round(posToMap.x)][floor(posToMap.y - speed)] && map[round(posToMap.x)][floor(posToMap.y - speed)] > 1)
 	{
-		pos.y -= speed;
+		map.move(0.0, -speed);
+		posToMap.y -=speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ((pos.y + speed) < windowSize.y))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && 7 > map[round(posToMap.x)][ceil(posToMap.y + speed)] && map[round(posToMap.x)][ceil(posToMap.y + speed)] > 1)
 	{
-		pos.y += speed;
+		map.move(0.0, speed);
+		posToMap.y += speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ((pos.x - speed) > 0))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 7 > map[floor(posToMap.x - speed)][round(posToMap.y)] && map[floor(posToMap.x - speed)][round(posToMap.y)] > 1)
 	{
-		pos.x -= speed;
+		map.move(-speed, 0.0);
+		posToMap.x -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ((pos.x + speed) < windowSize.x))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && 7 > map[ceil(posToMap.x + speed)][round(posToMap.y)] && map[ceil(posToMap.x + speed)][round(posToMap.y)] > 1)
 	{
-		pos.x += speed;
+		map.move(speed, 0.0);
+		posToMap.x += speed;
 	}
-	player.setPosition(pos);
 }
 
 void Player::fire()
@@ -88,7 +92,17 @@ void Player::shooting()
 	}
 }
 
+void Player::death()
+{
+	if (BasePlayerData::getHealth() <= 0)
+	{
+		player.setVisibility(false);
+		Chest chest(win_, { (int)round(posToMap.x * 100), (int)round(posToMap.y * 100) });
+		chest.draw();
+	}
+}
+
 void Player::draw()
 {
-	win_.draw(player);
+	player.draw();
 }

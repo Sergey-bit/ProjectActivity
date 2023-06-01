@@ -26,6 +26,7 @@ public:
 
 	void setPosition(const vec2i& npos);
 	const vec2f& getPosition() const;
+	void setRotation(vec2f origin, float angle);
 
 	vec2u getSize() const;
 	void setSize(const vec2i& nsize);
