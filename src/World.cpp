@@ -3,7 +3,11 @@
 #include <World.hpp>
 
 World::World(sf::RenderWindow& win) : map_(win), player(win), win_(win),
+<<<<<<< HEAD
 serverIp("localhost"), serverPort(57038),
+=======
+serverIp("25.34.39.164"), serverPort(56213),
+>>>>>>> 4b2edb78378e8f024c4274857338fae6f079350c
 players{Player(win_)}
 {
 }
@@ -61,8 +65,12 @@ void World::draw()
 	{
 		p.draw();
 		p.lookingAround();
+<<<<<<< HEAD
 		p.move();
 		collide({ p.x(), p.y() });
+=======
+		p.move(map_);
+>>>>>>> 4b2edb78378e8f024c4274857338fae6f079350c
 	}
 }
 void World::work()
@@ -88,8 +96,8 @@ void World::init()
 bool World::collide(const vec2f& pos)
 {
 	vec2f mapCoord = worldCoord({ (int)pos.x, (int)pos.y });
-	return (4 <= map_[(size_t)(mapCoord.x)][(int)mapCoord.y] <= 2 +
-		4 <= map_[(size_t)(mapCoord.x + 1)][(int)mapCoord.y + 1] <= 2);
+	return ((4 <= map_[(size_t)(mapCoord.x)][(int)mapCoord.y] <= 2 +
+		4 <= map_[(size_t)(mapCoord.x + 1)][(int)mapCoord.y + 1] <= 2) == 2) ;
 }
 bool World::isChestNearby()
 {

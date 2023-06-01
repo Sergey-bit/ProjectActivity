@@ -37,10 +37,12 @@ public:
 	void setScale(float x);
 	float getScale() const;
 
+	vec2f getPos() const;
 	std::array<Textures, M>& operator[](size_t i);
 
 private:
 	matrix map_;
+	vec2f pos;
 	sf::RenderWindow& win_;
 
 	BackSprite floor3_;

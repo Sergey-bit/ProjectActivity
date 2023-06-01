@@ -2,18 +2,11 @@
 
 Chest::Chest(sf::RenderWindow& Window, const vec2i& pos) :
 	Window(Window),
-	chestIcon(Window),
-	chestEmptySlot(Window)
+	chestIcon(Window)
 {
-	BaseChestData::setPos(pos);
-	chestIcon.load(TEX_PATH "chest\\chest.png");
-	chestIcon.setScale(vec2f(globalskale, globalskale));
-
-	chestEmptySlot.load(TEX_PATH "chest\\slot.png");
-	chestEmptySlot.setScale(vec2f(globalskale, globalskale));
-
 	position = pos;
-	chestIcon.setPosition(position);
+	chestIcon.load(TEX_PATH "chest\\chest.png");
+	//chestIcon.setScale(vec2f(globalskale, globalskale ));
 
 	for (int i = 0; i < maxItems; i++) {
 		chestSlots.push_back(new BackSprite(Window));
@@ -23,37 +16,47 @@ Chest::Chest(sf::RenderWindow& Window, const vec2i& pos) :
 	loadSlots();
 }
 
-void Chest::work() {
+void Chest::work(Map& map) {
+	const auto& pos3 = sf::VideoMode::getDesktopMode();
+	vec2f pos2 = (exchangeIF<int>(position) - map.getPos()) * 100.0f * map.getScale();
+	chestIcon.setScale(map.getScale());
+	if (pos3.width >= pos2.x >= 0 && pos3.height >= pos2.y >= 0)
+	{
+		chestIcon.setPosition({ (int)pos2.x, (int)pos2.y });
+		draw();
+	}
 
-	draw();
-	gettedItem = 5;
+	sf::Vector2i pos(mouse.getPosition());
 
-	if(mouse.isButtonPressed(sf::Mouse::Left)){
+	if (isPressed(chestIcon, pos) && flagP == false) {
+		flagE = !flagE;
+		flagP = true;
+	}
+	else if (flagP && !isPressed(chestIcon, pos)) {
+		flagP = false;
+	}
 
-		sf::Vector2i pos(mouse.getPosition());
-		
-		if(isPressed(chestIcon, pos) || flag){
 
-			flag = true;
+	if (flagE) {
 
-			for (int i = 0; i < maxItems; i++) {
-				chestSlots[i]->draw();
-			}
+		for (int i = 0; i < maxItems; i++) {
+			chestSlots[i]->draw();
+		}
 
-			if (mouse.isButtonPressed(sf::Mouse::Left)) {
+		if (mouse.isButtonPressed(sf::Mouse::Left)) {
 
-				if (isPressed(*chestSlots[0], pos)) gettedItem = 0;
-				if (isPressed(*chestSlots[1], pos)) gettedItem = 1;
-				if (isPressed(*chestSlots[2], pos)) gettedItem = 2;
-				if (isPressed(*chestSlots[3], pos)) gettedItem = 3;
-				if (isPressed(*chestSlots[4], pos)) gettedItem = 4;
+			sf::Vector2i pos2(mouse.getPosition());
 
-			}
-
-			if (klava.isKeyPressed(sf::Keyboard::BackSpace)) flag = false;
+			if (isPressed(*chestSlots[0], pos2)) gettedItem = 0;
+			else if (isPressed(*chestSlots[1], pos2)) gettedItem = 1;
+			else if (isPressed(*chestSlots[2], pos2)) gettedItem = 2;
+			else if (isPressed(*chestSlots[3], pos2)) gettedItem = 3;
+			else if (isPressed(*chestSlots[4], pos2)) gettedItem = 4;
 
 		}
-	}	
+
+	}
+
 }
 
 void Chest::draw() {
@@ -73,19 +76,17 @@ void Chest::loadSlots() {
 		if (items[i] == 6) chestSlots[i]->load(TEX_PATH "chest\\MINIGUN.png");
 		if (items[i] == 7) chestSlots[i]->load(TEX_PATH "chest\\UZI.png");
 		if (items[i] == 8) chestSlots[i]->load(TEX_PATH "chest\\RIFLE.png");
-		chestSlots[i]->setScale(vec2f(globalskale, globalskale));
+		chestSlots[i]->setScale(vec2f(globalskale * 1.15, globalskale * 1.15));
 	}
 
 	if (curItems < maxItems) {
 		for (int i = curItems; i < maxItems; i++) {
 			chestSlots[i]->load(TEX_PATH "chest\\slot.png");
-			chestSlots[i]->setScale(vec2f(globalskale, globalskale));
+			chestSlots[i]->setScale(vec2f(globalskale * 1.15, globalskale * 1.15));
 		}
 	}
 
-	for (int i = 0; i < maxItems; i++) {
-		//chestSlots[i]->setPosition(vec2i((1000 + i * 150) * globalskale, 0));
-	}
+	setPosition();
 
 }
 
@@ -97,42 +98,57 @@ void Chest::generateItems() {
 
 		size_t buff = rand() % 9;
 		items.push_back((equip)buff);
+
 	}
-	BaseChestData::setItems(items);
+	
 }
 
-bool Chest::isPressed(BackSprite& sprite, vec2i& pos2) {
-
-	vec2f pos1 = sprite.getPosition();
-	vec2u size = sprite.getSize();
-	if (((pos1.x < pos2.x) && (pos1.x + size.x < pos2.x)) && ((pos1.y < pos2.y) && (pos1.y + size.y < pos2.y))) return true;
-	else return false;
-
+bool Chest::isPressed(BackSprite& sprite, sf::Vector2i pos2) {
+	if (mouse.isButtonPressed(sf::Mouse::Left)){
+		vec2f pos1 = sprite.getPosition();
+		vec2u size = sprite.getSize();
+		if (((pos1.x < pos2.x) && (pos1.x + size.x > pos2.x)) && ((pos1.y < pos2.y) && (pos1.y + size.y > pos2.y))) return true;
+	}
+	return false;
 }
 
 Core::Eqiupment Chest::getItem() {
 
-	if (gettedItem < 5) {
-		items.erase(items.begin() + gettedItem);
-		return items[gettedItem];
+	if (gettedItem < maxItems) {
+		equip buff = items[gettedItem];
+		items[gettedItem] = equip::VOID;
+		chestSlots[gettedItem]->load(TEX_PATH "chest\\slot.png");
+		gettedItem = 5;
+		return buff;
 	}
-	BaseChestData::setItems(items);
+	else return Core::Eqiupment::VOID;
 }
 
 std::string Chest::toStrData() const {
-	std::string str = "chest:";
+	std::string str = "chest:";// +std::to_string(id) + ",";
 	for (int i = 0; i < items.size() - 1; i++) {
 		str += std::to_string(items[i]) + ",";
 	}
 	str += std::to_string(items[items.size() - 1]);
 	return str;
 }
-//BIG_HEAL 0 +
-//SMALL_HEAL 1
-//ARMOR1 2
-//SNIPER 3 +
-//SOFF_SHOTGUN 4 +
-//SHOTGUN 5 +
-//MINIGUN 6 +
-//UZI 7 +
-//RIFLE 8 +
+
+void Chest::setScale(float x) {
+	scale = x;
+	chestIcon.setScale(scale);
+
+}
+
+float Chest::getScale() {
+	return scale;
+}
+
+void Chest::setPosition() {
+	for (int i = 0; i < chestSlots.size(); i++) {
+		chestSlots[i]->setPosition(vec2i((1300 + i * 110) * globalskale, 0));
+	}
+}
+
+bool Chest::isOpened() const{
+	return flagE;
+}
