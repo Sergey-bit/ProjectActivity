@@ -23,12 +23,9 @@ private:
 	sf::RenderWindow& Window;
 	using equip = Core::Eqiupment;
 
-	vec2i position;
 	size_t maxItems = 5;
 	size_t curItems;
 	float globalskale = sf::VideoMode::getDesktopMode().width / 1920.0;
-
-	std::vector<equip> items;
 	std::vector<BackSprite*> chestSlots;
 
 	BackSprite chestIcon;

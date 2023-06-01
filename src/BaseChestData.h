@@ -4,7 +4,7 @@
 #include <Widget.hpp>
 class BaseChestData
 {
-private:
+protected:
 	vec2i position;
 	std::vector<Core::Eqiupment> items;
 public:

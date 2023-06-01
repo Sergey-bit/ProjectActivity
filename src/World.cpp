@@ -84,7 +84,7 @@ void World::init()
 	loadingWin_(p, vec3f(0.09, 0.09, 1.0));
 }
 
-bool World::collide(const vec2f& pos)
+bool World::collide(const vec2f& pos) const
 {
 	vec2f mapCoord = worldCoord({ (int)pos.x, (int)pos.y });
 	return (4 <= map_[(size_t)(mapCoord.x)][(int)mapCoord.y] <= 2 +
