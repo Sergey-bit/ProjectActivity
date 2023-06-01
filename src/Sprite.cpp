@@ -40,11 +40,19 @@ void Sprite::load(const sf::Image& sprite)
 
 void Sprite::load(const sf::Texture& sprite)
 {
+	if (texture)
+	{
+		delete texture;
+	}
 	texture = new sf::Texture(sprite);
 	this->sprite.setTexture(*texture);
 }
 void Sprite::load(const std::string& filename)
 {
+	if (texture)
+	{
+		delete texture;
+	}
 	texture = new sf::Texture();
 	
 	if (!texture->loadFromFile(filename))

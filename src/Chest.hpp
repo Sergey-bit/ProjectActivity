@@ -2,7 +2,6 @@
 
 #include <Frame.hpp>
 #include <Sprite.hpp>
-#include <Button\Button.hpp>
 #include <BackSprite.hpp>
 #include <Widget.hpp>
 #include <ctime>
@@ -17,6 +16,12 @@ public:
 	void draw();
 	void work();
 	std::string toStrData() const;
+	float id;
+
+	void setScale(float x);
+	float getScale();
+
+	bool isOpened() const;
 
 private:
 
@@ -27,20 +32,23 @@ private:
 	size_t maxItems = 5;
 	size_t curItems;
 	float globalskale = sf::VideoMode::getDesktopMode().width / 1920.0;
+	float scale;
 
 	std::vector<equip> items;
 	std::vector<BackSprite*> chestSlots;
 
 	BackSprite chestIcon;
-	BackSprite chestEmptySlot;
 
 	sf::Mouse mouse;
 	sf::Keyboard klava;
 
-	bool flag = false;
+	void setPosition();
+
+	bool flagP = false;
+	bool flagE = false;
 	size_t gettedItem = 5;
 
-	bool isPressed(BackSprite& sprite, vec2i& pos2);
+	bool isPressed(BackSprite& sprite, sf::Vector2i pos2);
 	void generateItems();
 	void loadSlots();
 };

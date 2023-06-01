@@ -209,11 +209,7 @@ floor2_(win), floor_(win), shrub_(win), wall_vert_(win), rakovina_(win)
 	}
 	for (int i = 0; i < 16; i++)
 	{
-<<<<<<< HEAD
-		for (int j = 0; j < 7;j++)
-=======
 		for (int j = 0; j < 7; j++)
->>>>>>> 806959db8f8a14e7e5f9a91764414fc925790ec6
 		{
 			map_[14 + i][5 + j] = FLOOR3;
 		}

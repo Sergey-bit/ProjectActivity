@@ -19,6 +19,7 @@ namespace Core
 		MINIGUN,
 		UZI,
 		RIFLE,
+		VOID,
 	};
 	class GameObject;
 

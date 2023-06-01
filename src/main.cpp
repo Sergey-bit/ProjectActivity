@@ -11,6 +11,8 @@
 #include <Profile.hpp>
 #include <map.hpp>
 #include <Chest.hpp>
+#include <Inventory.hpp>
+#include <ctime>
 
 #define SPEED 0.5
 #define SCALE_SPEED 0.05
@@ -47,14 +49,20 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "map", sf::Style::Fullscreen);
 	Map map(window);
 
-	Chest chest(window,{0,0});
+	srand(time(NULL));
+
+	Chest chest(window,{5,7});
+	Chest chest2(window,{8,3});
 	chest.toStrData();
+
+	Inventory inventar(window);
 	
 	while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+
 			if (event.type == sf::Event::Closed)
 			{
 				window.close();
@@ -62,6 +70,8 @@ int main() {
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
 				map.setScale(map.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
+				chest.setScale(chest.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
+				chest2.setScale(chest2.getScale() + ((event.mouseWheelScroll.delta > 0) ? 1 : -1) * SCALE_SPEED);
 			}
 			if (event.type == sf::Event::KeyPressed)
 			{
@@ -89,8 +99,19 @@ int main() {
 
 		}
 
+	
 		window.clear();
-		map.draw();
+		map.draw();	
+
+		chest.work();
+		chest2.work();
+		inventar.work();
+
+		inventar.setItem(chest.getItem());
+		inventar.setItem(chest2.getItem());
+
+		inventar.getItem();
+
 		window.display();
 	}
 
