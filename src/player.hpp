@@ -19,15 +19,15 @@ private:
 	Core::Eqiupment weapon = Core::SHOTGUN;
 	sf::RenderWindow& win_;
 	BackSprite player;
-
+	Map& map;
 
 public:
 	size_t playerInd = 1000;
 	std::vector<Bullet> ammo;
-	Player(sf::RenderWindow& win);
+	Player(sf::RenderWindow& win, Map& map);
 
 	void lookAt(const double& angle);
-	void move(Map& map);
+	void move(Map& map, bool mode=0);
 	void lookingAround();
 	void setAmmo(const int& ammo);
 	void fire();

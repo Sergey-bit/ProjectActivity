@@ -1,6 +1,6 @@
 #include <player.hpp>
 
-Player::Player(sf::RenderWindow& win) : win_(win), windowSize(win.getSize()), player(win)
+Player::Player(sf::RenderWindow& win, Map& map) : win_(win), windowSize(win.getSize()), player(win), map(map)
 {
 	player.load(TEX_PATH "player/player.png");
 	spriteOrigin = { player.getSize().x / 2.0f ,player.getSize().y / 2.0f };
@@ -28,25 +28,28 @@ void Player::setAmmo(const int& ammo)
 	ammoSize = ammo;
 }
 
-void Player::move(Map& map)
+void Player::move(Map& map, bool mode)
 {
-	float s = speed * 100.f * map.getScale();
-	const vec2f pSize{ 100.f * map.getScale(), 100.f * map.getScale() };
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && map.checkCollision({ (int)(pos.x - pSize.x / 2.f), (int)(pos.y - s - pSize.y / 2.f) }, pSize))
+	if (!mode)
 	{
-		map.move(0.0, -speed);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && map.checkCollision({ (int)(pos.x - pSize.x / 2.f), (int)(pos.y + s - pSize.y / 2.f) }, pSize))
-	{
-		map.move(0.0, speed);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && map.checkCollision({ (int)(pos.x - s - pSize.x / 2.f), (int)(pos.y - pSize.y / 2.f) }, pSize))
-	{
-		map.move(-speed, 0.0);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && map.checkCollision({ (int)(pos.x + s - pSize.x / 2.f), (int)(pos.y - pSize.y / 2.f) }, pSize))
-	{
-		map.move(speed, 0.0);
+		float s = speed * 100.f * map.getScale();
+		const vec2f pSize{ 100.f * map.getScale(), 100.f * map.getScale() };
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && map.checkCollision({ (int)(pos.x - pSize.x / 2.f), (int)(pos.y - s - pSize.y / 2.f) }, pSize))
+		{
+			map.move(0.0, -speed);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && map.checkCollision({ (int)(pos.x - pSize.x / 2.f), (int)(pos.y + s - pSize.y / 2.f) }, pSize))
+		{
+			map.move(0.0, speed);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && map.checkCollision({ (int)(pos.x - s - pSize.x / 2.f), (int)(pos.y - pSize.y / 2.f) }, pSize))
+		{
+			map.move(-speed, 0.0);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && map.checkCollision({ (int)(pos.x + s - pSize.x / 2.f), (int)(pos.y - pSize.y / 2.f) }, pSize))
+		{
+			map.move(speed, 0.0);
+		}
 	}
 }
 
@@ -107,5 +110,6 @@ void Player::death()
 
 void Player::draw()
 {
+	if (map.checkCollision({ (int)x(), (int)y() }, {100.0f, 100.0f}));
 	player.draw();
 }

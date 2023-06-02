@@ -4,9 +4,9 @@
 #include <chrono>
 #include <thread>
 
-World::World(sf::RenderWindow& win) : map_(win), player(win), win_(win),
-serverIp("localhost"), serverPort(6666),
-players{Player(win_), Player(win_)}
+World::World(sf::RenderWindow& win) : map_(win), player(win, map_), win_(win),
+serverIp("25.34.39.164"), serverPort(6666),
+players{Player(win_, map_), Player(win_, map_)}
 {
 }
 
@@ -31,10 +31,12 @@ void World::waitingForGame()
 					came = true;
 					std::string name;
 					float x, y;
+					int i;
 
 					receiveDataPacket >> name;
 					receiveDataPacket >> x;
 					receiveDataPacket >> y;
+					receiveDataPacket >> i;
 
 					player.setName(name);
 					map_.move(x, y);
@@ -69,14 +71,14 @@ void World::draw()
 {
 	map_.draw();
 	player.draw();
-	for (auto& p : players)
-	{
-		if (p.playerInd != player.playerInd)
-		{
-			if (p.getHealth() > 0) p.draw();
-			else p.death();
-		}
-	}
+	//for (auto& p : players)
+	//{
+	//	if (p.playerInd != player.playerInd)
+	//	{
+	//		if (p.getHealth() > 0) p.draw();
+	//		else p.death();
+	//	}
+	//}
 	for (auto& chest : chests)
 	{
 		chest->draw();
@@ -104,8 +106,8 @@ void World::work()
 	}
 
 	sendDataPacket << "POS";
-	sendDataPacket << map_.getPos().x + player.x() / 100.f << map_.getPos().y + player.y() / 100.f << player.getAngle() << player.getHealth();
-	if (player.ammo.size() > 0)
+	sendDataPacket << map_.getPos().x << map_.getPos().y << player.getAngle() << player.getHealth();
+	/*if (player.ammo.size() > 0)
 	{
 		sendDataPacket << "BULLETS";
 		sendDataPacket << player.ammo.size();
@@ -114,7 +116,7 @@ void World::work()
 			sendDataPacket << bull.angle << bull.startPos.x << bull.startPos.y << bull.type <<
 				bull.playerIndex << bull.pos.x << bull.pos.y;
 		}
-	}
+	}*/
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || !player.getHealth())
 	{
 		sendDataPacket.clear();
@@ -156,18 +158,32 @@ void World::work()
 			{
 				for (auto& p : players)
 				{
-					float x, y, angle, health;
+					float x, y;
+					double angle, health;
+					int i;
 					receiveDataPacket >> x;
 					receiveDataPacket >> y;
 					receiveDataPacket >> angle;
 					receiveDataPacket >> health;
+					receiveDataPacket >> i;
+
+					auto s = -map_.getPos() + vec2f(x, y);
 
 					std::cout << x << " " << y << " " << angle << std::endl;
 
-					p.setX(x);
-					p.setY(y);
-					p.lookAt(angle);
-					p.healthMoves(health);
+					//p.setX(x);
+					//p.setY(y);
+					if (i != player.playerInd)
+					{
+						map_.move(s.x, s.y);
+						p.lookAt(angle);
+						p.healthMoves(health);
+						p.setX(x * 100 * map_.getScale());
+						p.setY(y * 100 * map_.getScale());
+						p.draw();
+						map_.move(-s.x, -s.y);
+					}
+
 				}
 			}
 			if (cmd == "BULLETS")
