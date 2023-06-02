@@ -13,12 +13,13 @@ void fillRoom(Map::matrix& map, int dx, int dy, int offX, int offY, Map::Texture
 	}
 }
 
-void Map::move(float dx, float dy) {
+void Map::move(float dx, float dy)
+{
 	pos_.x += dx;
 	pos_.y += dy;
 }
-
-void Map::setScale(float x) {
+void Map::setScale(float x)
+{
 	scale_ = x;
 	wall_.setScale(scale_);
 	floor3_.setScale(scale_);
@@ -333,4 +334,26 @@ void Map::draw()
 vec2f Map::getPos() const
 {
 	return pos_;
+}
+bool Map::checkCollision(const vec2i& pos, const vec2f& size) const
+{
+	vec2f map_p = mapCoords(pos);
+	vec2f map_s = size / (100.0f * scale_);
+	vec2f otherV{ map_p.x + map_s.x, map_p.y + map_s.y };
+	
+	if (map_p.x >= N || map_p.x < 0 || map_p.y >= M || map_p.y < 0)
+	{
+		return false;
+	}
+	return walkable({ (int)map_p.x, (int)map_p.y }) && walkable({ (int)otherV.x, (int)map_p.y }) &&
+		walkable({ (int)map_p.x, (int)otherV.y }) && walkable(exchangeIF<float>(otherV));
+}
+
+vec2f Map::mapCoords(const vec2i& pos) const
+{
+	return pos_ + vec2f{ 1.f * pos.x , 1.f * pos.y } / (100.0f * scale_);
+}
+bool Map::walkable(const vec2i& pos) const
+{
+	return (SHRUB2 >= map_[pos.x][pos.y] && map_[pos.x][pos.y] >= FLOOR1);
 }

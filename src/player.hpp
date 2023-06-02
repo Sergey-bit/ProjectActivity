@@ -14,23 +14,25 @@ class Player : virtual public Core::GameObject, virtual public BasePlayerData
 private:
 	vec2f windowSize, spriteOrigin, posToMap;
 
-	double speed = 0.02;
+	double speed = 0.025;
 	int ammoSize = 0;
-	Core::Eqiupment weapon;
+	Core::Eqiupment weapon = Core::SHOTGUN;
 	sf::RenderWindow& win_;
 	BackSprite player;
-	std::vector<Bullet> ammo;
+
 
 public:
+	size_t playerInd = 1000;
+	std::vector<Bullet> ammo;
 	Player(sf::RenderWindow& win);
 
 	void lookAt(const double& angle);
 	void move(Map& map);
 	void lookingAround();
-	void setAmmo(int ammo);
 	void setAmmo(const int& ammo);
 	void fire();
-	void shooting();
+	void shooting(Map& map);
 	virtual void draw();
+
 	void death();
 };

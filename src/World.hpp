@@ -16,7 +16,7 @@ private:
 	Map map_;
 	Player player;
 	std::vector<Chest*> chests;
-	std::array<Player, 1> players;
+	std::array<Player, 2> players;
 	NetworkClient client;
 
 	sf::Packet sendDataPacket;
@@ -28,7 +28,11 @@ private:
 	bool started = true;
 	bool closed = false;
 
+	size_t playerInd = 100;
+
 public:
+	using Uint = unsigned int;
+
 	World(sf::RenderWindow& win);
 
 	virtual void work();
@@ -36,8 +40,8 @@ public:
 
 	void draw();
 	bool isClosed() const;
+	void setClosed(bool);
 	
-	bool collide(const vec2f& pos);
 	bool isChestNearby();
 
 	vec2f worldCoord(const vec2i& pos) const;

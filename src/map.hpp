@@ -3,6 +3,7 @@
 #include <array>
 #include <BackSprite.hpp>
 #include <Vector.hpp>
+#include <cmath>
 
 #define MAP_TEXTURES "ProjectActivity\\resources\\textures\\MapTextures"
 
@@ -37,8 +38,14 @@ public:
 	void setScale(float x);
 	float getScale() const;
 
+	bool checkCollision(const vec2i& pos, const vec2f& size) const;
+	vec2f mapCoords(const vec2i& pos) const;
+
 	vec2f getPos() const;
 	std::array<Textures, M>& operator[](size_t i);
+
+private:
+	bool walkable(const vec2i& pos) const;
 
 private:
 	matrix map_;

@@ -88,7 +88,9 @@ void MainMenu::work() {
         wrld.work();
         if (wrld.isClosed())
         {
+            transit = false;
             isStartPressed = false;
+            wrld.setClosed(false);
         }
     }
 }

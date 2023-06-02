@@ -42,14 +42,31 @@ Status NetworkClient::registerOnServer(sf::IpAddress serverIp, unsigned short se
 		return Status::Error;
 
 }
-
-Status NetworkClient::receiveData(sf::Packet& dataPacket, sf::IpAddress S_Ip, unsigned short S_dataPort)
+Status NetworkClient::blockReceiveData(sf::Packet& dataPacket, sf::IpAddress S_Ip, unsigned short S_dataPort)
+{
+	if (!dataSocket.isBlocking())dataSocket.setBlocking(true);
+	Status s = dataSocket.receive(dataPacket, S_Ip, S_dataPort);
+	if (s == Status::Done)
+	{
+		if (dataPacket.getDataSize() > 0)
+		{
+			//cout << "receiveData(): Data received\n";
+			return Status::Done;
+		}
+		else
+		{
+			std::cout << "(!)receiveData(): Received packet is empty\n";
+			return Status::Error;
+		}
+	}
+	return Status::NotReady;
+}
+Status NetworkClient::receiveData(sf::Packet& dataPacket, sf::IpAddress S_Ip, unsigned short S_dataPor)
 {
 	if (dataSocket.isBlocking())dataSocket.setBlocking(false);
 	Status s = dataSocket.receive(dataPacket, S_Ip, S_dataPort);
 	if (s == Status::Done)
 	{
-		std::cout << "ekjnv" << "\n";
 		if (dataPacket.getDataSize() > 0)
 		{
 			//cout << "receiveData(): Data received\n";

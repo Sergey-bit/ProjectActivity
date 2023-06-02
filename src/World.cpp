@@ -1,23 +1,22 @@
 #pragma once
 
 #include <World.hpp>
+#include <chrono>
+#include <thread>
 
 World::World(sf::RenderWindow& win) : map_(win), player(win), win_(win),
-<<<<<<< HEAD
-serverIp("localhost"), serverPort(57038),
-=======
-serverIp("25.34.39.164"), serverPort(56213),
->>>>>>> 4b2edb78378e8f024c4274857338fae6f079350c
-players{Player(win_)}
+serverIp("localhost"), serverPort(6666),
+players{Player(win_), Player(win_)}
 {
 }
 
 void World::waitingForGame()
 {
 	client.init();
-	client.registerOnServer(serverIp, serverPort, "Jkfbd");
+	std::string name = "rtg";
+	client.registerOnServer(serverIp, serverPort, name);
 
-	//bool came = false;
+	bool came = false;
 
 	while (started)
 	{
@@ -29,30 +28,38 @@ void World::waitingForGame()
 			{
 				if (s == "START")
 				{
-					started = false;
+					came = true;
 					std::string name;
-					int x, y;
+					float x, y;
 
 					receiveDataPacket >> name;
 					receiveDataPacket >> x;
 					receiveDataPacket >> y;
-						
-					player.setName(name);
 
-					player.setX(x * 100);
-					player.setY(y * 100);
+					player.setName(name);
+					map_.move(x, y);
 					player.healthMoves(100.0);
 
-					receiveDataPacket >> s;
+
+				}
+				if (s == "CHEST" && came)
+				{
 					int n;
+					started = false;
 					receiveDataPacket >> n;
 					for (int i = 0; i < n; i++)
 					{
 						int x, y;
 						receiveDataPacket >> x >> y;
-						chests.push_back(new Chest(win_, vec2i(x * 100, y * 100)));
+						chests.push_back(new Chest(win_, vec2i(x, y)));
 						map_[(size_t)(x)][y] = Map::CHEST;
 					}
+				}
+				if (s == "WAITING")
+				{
+					int x;
+					receiveDataPacket >> x;
+					continue;
 				}
 			}
 		}
@@ -61,24 +68,139 @@ void World::waitingForGame()
 void World::draw()
 {
 	map_.draw();
+	player.draw();
 	for (auto& p : players)
 	{
-		p.draw();
-		p.lookingAround();
-<<<<<<< HEAD
-		p.move();
-		collide({ p.x(), p.y() });
-=======
-		p.move(map_);
->>>>>>> 4b2edb78378e8f024c4274857338fae6f079350c
+		if (p.playerInd != player.playerInd)
+		{
+			if (p.getHealth() > 0) p.draw();
+			else p.death();
+		}
 	}
+	for (auto& chest : chests)
+	{
+		chest->draw();
+		chest->work(map_);
+	}
+}
+void World::setClosed(bool)
+{
+	closed = false;
 }
 void World::work()
 {
 	draw();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	sendDataPacket.clear();
+
+	player.shooting(map_);
+	player.fire();
+	player.lookingAround();
+	player.move(map_);
+
+	for (auto& c : chests)
 	{
-		closed = true;
+		c->work(map_);
+		c->getItem();
+	}
+
+	sendDataPacket << "POS";
+	sendDataPacket << map_.getPos().x + player.x() / 100.f << map_.getPos().y + player.y() / 100.f << player.getAngle() << player.getHealth();
+	if (player.ammo.size() > 0)
+	{
+		sendDataPacket << "BULLETS";
+		sendDataPacket << player.ammo.size();
+		for (const auto& bull : player.ammo)
+		{
+			sendDataPacket << bull.angle << bull.startPos.x << bull.startPos.y << bull.type <<
+				bull.playerIndex << bull.pos.x << bull.pos.y;
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || !player.getHealth())
+	{
+		sendDataPacket.clear();
+		sendDataPacket << "DEAD" << player.x() << player.y();
+		sendDataPacket << "DISCONNECT";
+		if (client.sendData(sendDataPacket) == Status::Done)
+		{
+			sendDataPacket.clear();
+			closed = true;
+			started = true;
+			map_.move(-map_.getPos().x, -map_.getPos().y);
+			client.dataSocket.unbind();
+			client.regSocket.disconnect();
+		}
+		return;
+	}
+	if (client.sendData(sendDataPacket) == Status::Done)
+	{
+		;
+	}
+
+	receiveDataPacket.clear();
+	sendDataPacket.clear();
+
+	if (client.receiveData(receiveDataPacket, serverIp, serverPort) == Status::Done)
+	{
+		std::string cmd;
+		if (receiveDataPacket.getDataSize() > 0 && receiveDataPacket >> cmd)
+		{
+			std::cout << cmd << std::endl;
+			if (cmd == "DEAD")
+			{
+				int n;
+				receiveDataPacket >> n;
+
+				players[n].healthMoves(-100);
+			};
+			if (cmd == "PLAYERS")
+			{
+				for (auto& p : players)
+				{
+					float x, y, angle, health;
+					receiveDataPacket >> x;
+					receiveDataPacket >> y;
+					receiveDataPacket >> angle;
+					receiveDataPacket >> health;
+
+					std::cout << x << " " << y << " " << angle << std::endl;
+
+					p.setX(x);
+					p.setY(y);
+					p.lookAt(angle);
+					p.healthMoves(health);
+				}
+			}
+			if (cmd == "BULLETS")
+			{
+				int n;
+
+				receiveDataPacket >> n;
+				vec2f p = map_.getPos() + vec2f(1.f * player.x(), 1.f * player.y());
+				for (int i = 0; i < n; i++)
+				{
+					Bullet bull;
+					int f;
+
+					receiveDataPacket >> bull.angle >> bull.startPos.x >> bull.startPos.y >>
+						f >> bull.playerIndex >> bull.pos.x >> bull.pos.y;
+					bull.type = (Core::BulletType)f;
+					if (bull.pos.x >= p.x - 0.5 && bull.pos.x <= p.x + 0.5 && bull.pos.y >= p.y - 0.5 &&
+						bull.pos.y <= p.y + 0.5)
+					{
+						player.healthMoves(-5.0);
+					}
+					else
+					{
+						bull.object.setFillColor(sf::Color::Magenta);
+						bull.object.setRadius(2.f);
+						bull.object.setPosition(
+							vec2f(map_.getScale() * 100.f * bull.pos.x, map_.getScale() * 100.f * bull.pos.y)
+						);
+						win_.draw(bull.object);
+					}
+				}
+			}
+		}
 	}
 }
 void World::init()
@@ -93,12 +215,6 @@ void World::init()
 	loadingWin_(p, vec3f(0.09, 0.09, 1.0));
 }
 
-bool World::collide(const vec2f& pos)
-{
-	vec2f mapCoord = worldCoord({ (int)pos.x, (int)pos.y });
-	return ((4 <= map_[(size_t)(mapCoord.x)][(int)mapCoord.y] <= 2 +
-		4 <= map_[(size_t)(mapCoord.x + 1)][(int)mapCoord.y + 1] <= 2) == 2) ;
-}
 bool World::isChestNearby()
 {
 	vec2i xy = exchangeIF<float>(worldCoord({ (int)player.x(), (int)player.y() }));

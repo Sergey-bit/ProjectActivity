@@ -30,25 +30,23 @@ void Player::setAmmo(const int& ammo)
 
 void Player::move(Map& map)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && 7 > map[round(posToMap.x)][floor(posToMap.y - speed)] && map[round(posToMap.x)][floor(posToMap.y - speed)] > 1)
+	float s = speed * 100.f * map.getScale();
+	const vec2f pSize{ 100.f * map.getScale(), 100.f * map.getScale() };
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && map.checkCollision({ (int)(pos.x - pSize.x / 2.f), (int)(pos.y - s - pSize.y / 2.f) }, pSize))
 	{
 		map.move(0.0, -speed);
-		posToMap.y -=speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && 7 > map[round(posToMap.x)][ceil(posToMap.y + speed)] && map[round(posToMap.x)][ceil(posToMap.y + speed)] > 1)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && map.checkCollision({ (int)(pos.x - pSize.x / 2.f), (int)(pos.y + s - pSize.y / 2.f) }, pSize))
 	{
 		map.move(0.0, speed);
-		posToMap.y += speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 7 > map[floor(posToMap.x - speed)][round(posToMap.y)] && map[floor(posToMap.x - speed)][round(posToMap.y)] > 1)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && map.checkCollision({ (int)(pos.x - s - pSize.x / 2.f), (int)(pos.y - pSize.y / 2.f) }, pSize))
 	{
 		map.move(-speed, 0.0);
-		posToMap.x -= speed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && 7 > map[ceil(posToMap.x + speed)][round(posToMap.y)] && map[ceil(posToMap.x + speed)][round(posToMap.y)] > 1)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && map.checkCollision({ (int)(pos.x + s - pSize.x / 2.f), (int)(pos.y - pSize.y / 2.f) }, pSize))
 	{
 		map.move(speed, 0.0);
-		posToMap.x += speed;
 	}
 }
 
@@ -56,30 +54,37 @@ void Player::fire()
 {
 	for (int i = 0; i < ammo.size(); i++)
 	{
-		float velocity = 0;
-		if (ammo[0].type == 0)
-			velocity = 200.0f;
-		if (ammo[0].type == 1)
-			velocity = 150.0f;
-		if (ammo[0].type == 3)
-			velocity = 100.0f;
+		float velocity = 100.0;
+		if (ammo[i].type == 1)
+			velocity = 100.0;
+		if (ammo[i].type == 2)
+			velocity = 300.f;
+		if (ammo[i].type == 3)
+			velocity = 300.0f;
+		//std::cout << ammo[i].angle << std::endl;
 		vec2f currVelocity = { cos(ammo[i].angle) * velocity, sin(ammo[i].angle) * velocity };
 		ammo[i].object.move(currVelocity);
 		win_.draw(ammo[i].object);
+		//std::cout << ammo[i].object.getPosition().x << " " << ammo[i].object.getPosition().y;
+		ammo[i].pos = ammo[i].object.getPosition() / 100.0f;
 		if (ammo[i].object.getPosition().x < 0 || ammo[i].object.getPosition().x > windowSize.x
 			|| ammo[i].object.getPosition().y < 0 || ammo[i].object.getPosition().y > windowSize.y)
 			ammo.erase(ammo.begin() + i);
 	}
 }
 
-void Player::shooting()
+void Player::shooting(Map& map)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		Bullet bullet;
+		ammo.push_back(Bullet());
+		Bullet &bullet = ammo.back();
+		bullet.object.setFillColor(sf::Color::Magenta);
+		bullet.startPos = map.mapCoords({ (int)pos.x, (int)pos.y + 1 });
 		bullet.object.setRadius(6);
-		bullet.pos = { pos.x, pos.y + 10 };
+		bullet.pos = { pos.x, pos.y + 1 };
 		bullet.object.setPosition(bullet.pos);
+		bullet.pos = bullet.startPos;
 		bullet.angle = angle;
 		if (weapon == Core::SHOTGUN)
 			bullet.type = Core::shotgun;
@@ -87,8 +92,6 @@ void Player::shooting()
 			bullet.type = Core::rifle;
 		if (weapon == Core::UZI)
 			bullet.type = Core::pistol;
-		ammo.push_back(bullet);
-		fire();
 	}
 }
 

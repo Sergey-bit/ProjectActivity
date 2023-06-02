@@ -9,8 +9,6 @@ using Status = sf::Socket::Status;
 /*Object for managing connection to the server that handles connection using NetworkServer*/
 class NetworkClient
 {
-	sf::UdpSocket dataSocket;
-	sf::TcpSocket regSocket;
 
 	sf::Packet sendPacket;
 
@@ -21,6 +19,8 @@ class NetworkClient
 	unsigned short S_regPort;
 
 public:
+	sf::TcpSocket regSocket;
+	sf::UdpSocket dataSocket;
 	unsigned short S_dataPort;
 	NetworkClient();
 
@@ -32,6 +32,8 @@ public:
 
 	/*Setups connection to the server, retrieves and sends needed data to exchange data*/
 	Status registerOnServer(sf::IpAddress serverIp, unsigned short serverRegPort, std::string clientName);
+	Status blockReceiveData(sf::Packet& dataPacket, sf::IpAddress S_Ip, unsigned short S_dataPort);
+
 
 	/*Receives and records connected clients names to passed vector*/
 	Status receiveConnectedClientsNames(std::vector<std::string>& namesVec);
